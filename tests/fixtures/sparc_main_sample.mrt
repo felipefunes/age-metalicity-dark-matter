@@ -1,0 +1,32 @@
+Title: SPARC. I. Mass Models for 175 Disk Galaxies with
+       Spitzer Photometry and Accurate Rotation Curves
+Authors: Federico Lelli, Stacy S. McGaugh and James M. Schombert
+Table: Galaxy Sample
+================================================================================
+Byte-by-byte Description of file: Table1.mrt
+--------------------------------------------------------------------------------
+   Bytes Format Units         Label   Explanations
+--------------------------------------------------------------------------------
+   1- 11 A11    ---           Galaxy  Galaxy Name
+  12- 13 I2     ---           T       Hubble Type (1)
+  14- 19 F6.2   Mpc           D       Distance
+  20- 24 F5.2   Mpc         e_D       Mean error on D
+  25- 26 I2     ---         f_D       Distance Method (2)
+  27- 30 F4.1   deg           Inc     Inclination
+  31- 34 F4.1   deg         e_Inc     Mean error on Inc
+  35- 41 F7.3   10+9solLum    L[3.6]  Total Luminosity at [3.6]
+  42- 48 F7.3   10+9solLum  e_L[3.6]  Mean error on L[3.6]
+  49- 53 F5.2   kpc           Reff    Effective Radius at [3.6]
+  54- 61 F8.2   solLum/pc2    SBeff   Effective Surface Brightness at [3.6]
+  62- 66 F5.2   kpc           Rdisk   Disk Scale Length at [3.6]
+  67- 74 F8.2   solLum/pc2    SBdisk  Disk Central Surface Brightness at [3.6]
+  75- 81 F7.3   10+9solMass   MHI     Total HI mass
+  82- 86 F5.2   kpc           RHI     HI radius at 1 Msun/pc2
+  87- 91 F5.1   km/s          Vflat   Asymptotically Flat Rotation Velocity
+  92- 96 F5.1   km/s        e_Vflat   Mean error on Vflat
+  97- 99 I3     ---           Q       Quality Flag (3)
+ 100-113 A14    ---           Ref.    References for HI and Ha data (4)
+--------------------------------------------------------------------------------
+       CamB 10   3.36  0.26  2 65.0  5.0   0.075   0.003  1.21     7.89  0.47    66.20   0.012  1.21   0.0   0.0   2           Bm03
+    NGC2403  6   3.16  0.16  2 63.0  3.0  10.041   0.028  2.16   341.06  1.39  1408.74   3.199 15.11 131.2   4.9   1      Da06,Fr02
+    NGC3198  5  13.80  1.40  3 73.0  3.0  38.279   0.212  5.84   178.99  3.14  1602.62  10.869 35.66 150.1   3.9   1 Da06,Be91,Be87
