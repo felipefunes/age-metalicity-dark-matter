@@ -1,11 +1,16 @@
 import { useMemo } from "react";
 import Plot from "react-plotly.js";
 import type { Layout, PlotData } from "plotly.js-dist-min";
+import type { GalaxyFilters } from "../api";
+import { useCorrelation } from "../hooks/useCorrelation";
 import type { GalaxySummary } from "../types";
-import { HUBBLE_TYPE_LABELS, hubbleTypeLabel } from "../utils/format";
+import { HUBBLE_TYPE_LABELS, formatPValue, hubbleTypeLabel } from "../utils/format";
 
 interface HubbleTypeChartProps {
   galaxies: GalaxySummary[];
+  filters: GalaxyFilters;
+  controlForMass: boolean;
+  onControlForMassChange: (value: boolean) => void;
   onPointClick: (pgcId: number) => void;
   loading: boolean;
 }
@@ -15,7 +20,21 @@ const TYPE_ORDER = Object.keys(HUBBLE_TYPE_LABELS)
   .sort((a, b) => a - b)
   .map((t) => HUBBLE_TYPE_LABELS[t]);
 
-export function HubbleTypeChart({ galaxies, onPointClick, loading }: HubbleTypeChartProps) {
+export function HubbleTypeChart({
+  galaxies,
+  filters,
+  controlForMass,
+  onControlForMassChange,
+  onPointClick,
+  loading,
+}: HubbleTypeChartProps) {
+  const correlation = useCorrelation(
+    "hubble_type",
+    "dm_fraction",
+    filters,
+    controlForMass ? "mass" : null,
+  );
+
   const points = useMemo(
     () => galaxies.filter((g) => g.T !== null && g.f_dm !== null),
     [galaxies],
@@ -34,6 +53,12 @@ export function HubbleTypeChart({ galaxies, onPointClick, loading }: HubbleTypeC
     fillcolor: "rgba(34, 211, 238, 0.08)",
     hovertemplate: "<b>%{customdata[0]}</b> (PGC %{customdata[1]})<br>f_DM: %{y}<extra></extra>",
   };
+
+  const annotationText = correlation.result
+    ? `${controlForMass ? "Spearman parcial (control: masa)" : "Spearman"}: ` +
+      `ρ = ${correlation.result.coefficient !== null ? correlation.result.coefficient.toFixed(3) : "—"}, ` +
+      `${formatPValue(correlation.result.p_value)}, n = ${correlation.result.n}`
+    : "";
 
   const layout: Partial<Layout> = {
     autosize: true,
@@ -55,12 +80,37 @@ export function HubbleTypeChart({ galaxies, onPointClick, loading }: HubbleTypeC
       color: "#9a9aad",
     },
     showlegend: false,
+    annotations: annotationText
+      ? [
+          {
+            text: annotationText,
+            xref: "paper",
+            yref: "paper",
+            x: 0.02,
+            y: 0.98,
+            xanchor: "left",
+            yanchor: "top",
+            showarrow: false,
+            font: { family: "JetBrains Mono, monospace", size: 12, color: "#e8e8f0" },
+            bgcolor: "rgba(18, 18, 24, 0.75)",
+            borderpad: 6,
+          },
+        ]
+      : [],
   };
 
   return (
     <div className="panel">
       <div className="panel-title-row">
         <h2>f_DM por tipo de Hubble (proxy morfológico de edad)</h2>
+        <label className="control-toggle">
+          <input
+            type="checkbox"
+            checked={controlForMass}
+            onChange={(e) => onControlForMassChange(e.target.checked)}
+          />
+          Controlar correlación por masa
+        </label>
       </div>
       {loading && <div className="status-text">Cargando…</div>}
       {!loading && points.length === 0 && (

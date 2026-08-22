@@ -72,7 +72,14 @@ export default function App() {
             error={error}
           />
 
-          <HubbleTypeChart galaxies={galaxies} onPointClick={setSelectedPgcId} loading={loading} />
+          <HubbleTypeChart
+            galaxies={galaxies}
+            filters={filters}
+            controlForMass={state.controlForMass}
+            onControlForMassChange={(value) => update({ controlForMass: value })}
+            onPointClick={setSelectedPgcId}
+            loading={loading}
+          />
         </main>
       </div>
 
