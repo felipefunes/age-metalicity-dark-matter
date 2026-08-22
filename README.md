@@ -28,6 +28,18 @@ coincidencia de texto de nombre.
 
 Ver `data/processed/coverage_report.json` después de correr el pipeline para el detalle completo.
 
+## Hallazgos (`docs/findings/`)
+
+Análisis versionados y fechados, en orden cronológico. Un archivo nunca se edita después de
+publicado — una revisión o corrección se documenta como un archivo nuevo que referencia al
+anterior (ver `CHANGELOG.md` para el motivo de cada revisión). "Vigente" no siempre implica que
+la versión anterior esté mal: puede ser que la confirme en vez de corregirla.
+
+| Fecha | Archivo | Estado |
+|---|---|---|
+| 2026-08-22 | [`hubble_mass_dm_v1`](docs/findings/2026-08-22_hubble_mass_dm_v1.md) — masa como confounder casi total del tipo de Hubble; T–f_DM se invierte al controlar por masa | **Vigente** — conclusiones sin cambios |
+| 2026-08-22 | [`hubble_mass_dm_v2_log_control_check`](docs/findings/2026-08-22_hubble_mass_dm_v2_log_control_check.md) — verificación: ¿hace falta controlar por log-masa en vez de masa cruda? (no, ver documento) | **Vigente** — confirma v1, no lo reemplaza |
+
 ## Stack
 
 - **Pipeline**: Python (pandas, astropy, scipy, statsmodels, astroquery, requests)

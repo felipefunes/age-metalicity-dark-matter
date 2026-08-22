@@ -61,6 +61,39 @@ def test_partial_spearman_preserves_a_genuine_direct_relationship():
     assert partial.coefficient > 0.9
 
 
+def test_partial_spearman_invariant_to_monotonic_control_rescaling():
+    """Regression test for a methodological concern raised 2026-08-22 (see
+    docs/findings/2026-08-22_hubble_mass_dm_v2_log_control_check.md): does a
+    control variable spanning several orders of magnitude (like this
+    project's L[3.6], min~0.01 to max~490) need to be log-scaled before
+    controlling for it, the way a raw-value OLS control would?
+
+    No: partial_spearman ranks x, y AND the control variable before doing
+    any regression, and rankdata(z) == rankdata(f(z)) for any strictly
+    monotonic increasing f (log10 included, for z > 0) -- so the
+    residualization is already invariant to how the control variable is
+    scaled. This test pins that invariant down: if a future refactor ever
+    regresses on a control variable's raw values instead of its ranks, this
+    test will fail instead of silently degrading the reported correlations.
+    """
+    rng = np.random.default_rng(3)
+    n = 150
+    # Skewed, multi-order-of-magnitude control variable mirroring L[3.6]'s
+    # real range in this dataset (~0.01 to ~490).
+    z_linear = rng.lognormal(mean=1.0, sigma=2.5, size=n) + 0.01
+    x = np.log10(z_linear) + rng.normal(0, 1, size=n)
+    y = np.log10(z_linear) + rng.normal(0, 1, size=n)
+
+    result_linear_control = partial_spearman(x, y, z_linear)
+    result_log_control = partial_spearman(x, y, np.log10(z_linear))
+
+    assert result_linear_control.coefficient == pytest.approx(
+        result_log_control.coefficient, abs=1e-12
+    )
+    assert result_linear_control.p_value == pytest.approx(result_log_control.p_value, abs=1e-12)
+    assert result_linear_control.n == result_log_control.n
+
+
 def test_partial_spearman_matches_manual_rank_residual_pearson():
     rng = np.random.default_rng(2)
     n = 30
