@@ -8,15 +8,6 @@ import type { GalaxyFilters } from "./api";
 import { useCorrelation } from "./hooks/useCorrelation";
 import { useGalaxies } from "./hooks/useGalaxies";
 import { useUrlState } from "./hooks/useUrlState";
-import type { ApiVariable } from "./types";
-
-const AXIS_TO_API_VARIABLE: Record<string, ApiVariable> = {
-  metallicity: "metallicity",
-  age_gyr: "age_gyr",
-  dm_fraction: "dm_fraction",
-  mass: "mass",
-  mhi: "mhi",
-};
 
 export default function App() {
   const [state, update] = useUrlState();
@@ -34,8 +25,8 @@ export default function App() {
   const { galaxies, loading, error } = useGalaxies(filters);
 
   const correlation = useCorrelation(
-    AXIS_TO_API_VARIABLE[state.xAxis],
-    AXIS_TO_API_VARIABLE[state.yAxis],
+    state.xAxis,
+    state.yAxis,
     filters,
     state.controlForMass ? "mass" : null,
   );

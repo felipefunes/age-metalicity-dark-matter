@@ -77,6 +77,22 @@ export function Header() {
                 <strong>NED / Simbad</strong> — resolución de identidad a PGC (por nombre o, si falla,
                 por coordenadas).
               </li>
+              <li>
+                <strong>Moustakas, J., Kennicutt, R. C., Jr., Tremonti, C. A., Dale, D. A., Smith,
+                J.-D. T., &amp; Calzetti, D. 2010</strong>, "Optical Spectroscopy and Nebular Oxygen
+                Abundances of the Spitzer/SINGS Galaxies", <em>ApJS</em>, 190, 233 — metalicidad
+                (dos calibraciones, KK04 y PT05).
+              </li>
+              <li>
+                <strong>Pilyugin, L. S., Grebel, E. K., &amp; Kniazev, A. Y. 2014</strong>, "The
+                Abundance Properties of Nearby Late-Type Galaxies. I. The Data", <em>AJ</em>, 147,
+                131 — metalicidad, fuente independiente.
+              </li>
+              <li>
+                <strong>Leroy, A. K., et al. 2019</strong>, "A z=0 Multiwavelength Galaxy
+                Synthesis. I. A WISE and GALEX Atlas of Local Galaxies", <em>ApJS</em>, 244, 24
+                (z0MGS) — proxy de edad vía sSFR, no una edad estelar en sentido estricto.
+              </li>
             </ul>
           </div>
         </div>

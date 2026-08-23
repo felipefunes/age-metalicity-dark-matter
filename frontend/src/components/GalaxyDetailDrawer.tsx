@@ -79,6 +79,38 @@ export function GalaxyDetailDrawer({ pgcId, onClose }: GalaxyDetailDrawerProps) 
                       : "sin dato"
                   }
                 />
+                <Row
+                  label="Metalicidad KK04 (Moustakas+2010)"
+                  value={
+                    galaxy.metallicity_kk04 !== null
+                      ? `${formatNumber(galaxy.metallicity_kk04)} ± ${formatNumber(galaxy.e_metallicity_kk04)} (${galaxy.n_hii_regions_moustakas ?? "?"} regiones HII)`
+                      : "sin dato"
+                  }
+                />
+                <Row
+                  label="Metalicidad PT05 (Moustakas+2010)"
+                  value={
+                    galaxy.metallicity_pt05 !== null
+                      ? `${formatNumber(galaxy.metallicity_pt05)} ± ${formatNumber(galaxy.e_metallicity_pt05)} (${galaxy.n_hii_regions_moustakas ?? "?"} regiones HII)`
+                      : "sin dato"
+                  }
+                />
+                <Row
+                  label="Metalicidad (Pilyugin+2014)"
+                  value={
+                    galaxy.metallicity_pilyugin2014 !== null
+                      ? `${formatNumber(galaxy.metallicity_pilyugin2014)} ± ${formatNumber(galaxy.e_metallicity_pilyugin2014)}`
+                      : "sin dato"
+                  }
+                />
+                <Row
+                  label="Proxy de edad: sSFR (z0MGS)"
+                  value={
+                    galaxy.age_proxy_ssfr !== null
+                      ? `log₁₀=${formatNumber(galaxy.age_proxy_ssfr)} ± ${formatNumber(galaxy.e_age_proxy_ssfr)} (${galaxy.age_proxy_source} / ${galaxy.age_proxy_method})`
+                      : "sin dato"
+                  }
+                />
               </tbody>
             </table>
           </>

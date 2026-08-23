@@ -2,15 +2,13 @@ import { DualRangeSlider } from "./DualRangeSlider";
 import { useMassDomain } from "../hooks/useMassDomain";
 import type { AppState } from "../hooks/useUrlState";
 import type { MatchMethod, ScatterAxis } from "../types";
-import { AXIS_LABELS } from "../utils/format";
+import { AXIS_LABELS, SCATTER_AXIS_OPTIONS } from "../utils/format";
 
 interface FilterPanelProps {
   state: AppState;
   update: (partial: Partial<AppState>) => void;
   onClose: () => void;
 }
-
-const SCATTER_AXIS_OPTIONS: ScatterAxis[] = ["metallicity", "age_gyr", "dm_fraction", "mass", "mhi"];
 
 const MATCH_METHOD_OPTIONS: { value: MatchMethod; label: string }[] = [
   { value: "name_match", label: "Por nombre (Simbad)" },

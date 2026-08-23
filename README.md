@@ -20,9 +20,17 @@ coincidencia de texto de nombre.
   pueden tener una PK nula).
 - **Metalicidad y edad estelar (HyperLeda): 0/163 con dato**, verificado contra la página real de
   varias galaxias. HyperLeda no tiene un campo de metalicidad ni de edad estelar para galaxias
-  tardías/enanas (la mayoría de SPARC); no se inventó ni se derivó un valor sustituto. El
-  pipeline y el frontend funcionan hoy 100% con tipo de Hubble (T) como proxy, y las columnas
-  `metallicity`/`age_gyr` quedan listas para poblarse sin romper nada si se conecta otra fuente.
+  tardías/enanas (la mayoría de SPARC); no se inventó ni se derivó un valor sustituto. Las
+  columnas genéricas `metallicity`/`age_gyr` quedan como estaban (nulas) para cuando haya una
+  fuente única y canónica.
+- **Metalicidad de fuentes externas reales**: 14/163 con `metallicity_kk04` y `metallicity_pt05`
+  (Moustakas+2010), 19/163 con `metallicity_pilyugin2014` (Pilyugin+2014), **22/163 con al menos
+  una de las tres** (11 en ambas fuentes, usado como chequeo cruzado). Muestra chica — ver
+  `docs/findings/2026-08-22_metallicity_age_proxy_v1.md` para el detalle y por qué las
+  correlaciones con f_DM ahí son preliminares, no concluyentes.
+- **Proxy de edad (sSFR, z0MGS): 126/163 con dato** — buena cobertura, pero es un proxy de
+  actividad de formación estelar reciente (`age_proxy_ssfr`), no una edad de síntesis de
+  poblaciones — nunca se mezcla con `age_gyr`.
 - **f_DM** (fracción de materia oscura en el radio más externo): rango 0–0.94, media ≈0.72,
   consistente con la literatura de SPARC.
 
@@ -39,6 +47,7 @@ la versión anterior esté mal: puede ser que la confirme en vez de corregirla.
 |---|---|---|
 | 2026-08-22 | [`hubble_mass_dm_v1`](docs/findings/2026-08-22_hubble_mass_dm_v1.md) — masa como confounder casi total del tipo de Hubble; T–f_DM se invierte al controlar por masa | **Vigente** — conclusiones sin cambios |
 | 2026-08-22 | [`hubble_mass_dm_v2_log_control_check`](docs/findings/2026-08-22_hubble_mass_dm_v2_log_control_check.md) — verificación: ¿hace falta controlar por log-masa en vez de masa cruda? (no, ver documento) | **Vigente** — confirma v1, no lo reemplaza |
+| 2026-08-22 | [`metallicity_age_proxy_v1`](docs/findings/2026-08-22_metallicity_age_proxy_v1.md) — primera integración de metalicidad real (Moustakas+2010, Pilyugin+2014) y proxy de edad por sSFR (z0MGS); correlaciones con f_DM | **Vigente** — preliminar/indicativo por muestra chica en metalicidad (n=22), no concluyente |
 
 ## Stack
 
@@ -153,12 +162,24 @@ cd frontend && npx tsc -b && npm run build   # type-check + build de producción
   descompuestas.
 - **HyperLeda** — parámetros extragalácticos por objeto.
 - **NED / Simbad** — resolución de identidad a PGC.
+- **Moustakas, J., Kennicutt, R. C., Jr., Tremonti, C. A., Dale, D. A., Smith, J.-D. T., &
+  Calzetti, D. 2010**, "Optical Spectroscopy and Nebular Oxygen Abundances of the
+  Spitzer/SINGS Galaxies", *ApJS*, 190, 233. Metalicidad (`metallicity_kk04`,
+  `metallicity_pt05`), vía VizieR `J/ApJS/190/233`.
+- **Pilyugin, L. S., Grebel, E. K., & Kniazev, A. Y. 2014**, "The Abundance Properties of
+  Nearby Late-Type Galaxies. I. The Data", *AJ*, 147, 131. Metalicidad
+  (`metallicity_pilyugin2014`), vía VizieR `J/AJ/147/131`.
+- **Leroy, A. K., et al. 2019**, "A z=0 Multiwavelength Galaxy Synthesis. I. A WISE and GALEX
+  Atlas of Local Galaxies", *ApJS*, 244, 24 (proyecto z0MGS). Proxy de edad vía sSFR
+  (`age_proxy_ssfr`), vía VizieR `J/ApJS/244/24`.
 
 ## Limitaciones conocidas
 
-- Metalicidad y edad estelar en sentido estricto no están disponibles hoy para ninguna galaxia de
-  SPARC vía HyperLeda (ver arriba). El proyecto está preparado para sumarlas sin romper nada si
-  se conecta otra fuente (ver columnas `*_source`/`*_method`), pero eso queda fuera del alcance
-  actual — requiere elegir y justificar un catálogo específico de abundancias/edades y su propio
-  cruce de identidad.
+- Metalicidad y edad estelar en sentido estricto vía HyperLeda siguen en 0/163 (ver arriba); ese
+  slot genérico (`metallicity`/`age_gyr`) queda disponible para una futura fuente canónica única.
+- La metalicidad real (Moustakas+2010, Pilyugin+2014) cubre solo 22/163 galaxias — por debajo del
+  umbral de 30 que se fijó como mínimo razonable para sacar conclusiones. Se integró igual, pero
+  documentado explícitamente con esa limitación, no como hallazgo concluyente.
+- `age_proxy_ssfr` (z0MGS) es un proxy de formación estelar reciente, no una edad de síntesis de
+  poblaciones estelares — no confundir con una edad real en Gyr.
 - 12/175 galaxias SPARC no tienen cross-id PGC en Simbad ni NED (documentadas, excluidas).

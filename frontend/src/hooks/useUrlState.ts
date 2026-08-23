@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
 import type { MatchMethod, ScatterAxis } from "../types";
+import { SCATTER_AXIS_OPTIONS } from "../utils/format";
 
 export interface AppState {
   massMin: number | null;
@@ -23,8 +24,6 @@ const DEFAULT_STATE: AppState = {
   controlForMass: false,
 };
 
-const SCATTER_AXES: ScatterAxis[] = ["metallicity", "age_gyr", "dm_fraction", "mass", "mhi"];
-
 function parseState(search: string): AppState {
   const params = new URLSearchParams(search);
   const massMin = params.get("mass_min");
@@ -43,8 +42,8 @@ function parseState(search: string): AppState {
         ) as MatchMethod[])
       : DEFAULT_STATE.matchMethods,
     requireAge: params.get("require_age") === "true",
-    xAxis: xAxis && SCATTER_AXES.includes(xAxis as ScatterAxis) ? (xAxis as ScatterAxis) : DEFAULT_STATE.xAxis,
-    yAxis: yAxis && SCATTER_AXES.includes(yAxis as ScatterAxis) ? (yAxis as ScatterAxis) : DEFAULT_STATE.yAxis,
+    xAxis: xAxis && SCATTER_AXIS_OPTIONS.includes(xAxis as ScatterAxis) ? (xAxis as ScatterAxis) : DEFAULT_STATE.xAxis,
+    yAxis: yAxis && SCATTER_AXIS_OPTIONS.includes(yAxis as ScatterAxis) ? (yAxis as ScatterAxis) : DEFAULT_STATE.yAxis,
     controlForMass: params.get("control_for_mass") === "true",
   };
 }

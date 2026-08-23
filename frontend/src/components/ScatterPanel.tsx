@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import Plot from "react-plotly.js";
 import type { Layout, PlotData } from "plotly.js-dist-min";
 import type { CorrelationResponse, GalaxySummary, ScatterAxis } from "../types";
-import { AXIS_LABELS, formatPValue } from "../utils/format";
+import { AXIS_LABELS, AXIS_SOURCE, formatPValue } from "../utils/format";
 import { axisError, axisValue, isLogAxis } from "../utils/galaxyFields";
 import { fitLinearRegression } from "../utils/regression";
 
@@ -255,8 +255,9 @@ export function ScatterPanel({
       <div className="chart-footer">
         <span>
           Fuente: SPARC (Lelli, McGaugh &amp; Schombert 2016)
-          {(xAxis === "metallicity" || yAxis === "metallicity" || xAxis === "age_gyr" || yAxis === "age_gyr") &&
-            " · HyperLeda"}
+          {Array.from(new Set([AXIS_SOURCE[xAxis], AXIS_SOURCE[yAxis]].filter(Boolean))).map(
+            (source) => ` · ${source}`,
+          )}
         </span>
         <span>n = {points.length} galaxias graficadas</span>
       </div>

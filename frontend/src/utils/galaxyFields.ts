@@ -4,8 +4,16 @@ export function axisValue(galaxy: GalaxySummary, axis: ScatterAxis): number | nu
   switch (axis) {
     case "metallicity":
       return galaxy.metallicity;
+    case "metallicity_kk04":
+      return galaxy.metallicity_kk04;
+    case "metallicity_pt05":
+      return galaxy.metallicity_pt05;
+    case "metallicity_pilyugin2014":
+      return galaxy.metallicity_pilyugin2014;
     case "age_gyr":
       return galaxy.age_gyr;
+    case "age_proxy_ssfr":
+      return galaxy.age_proxy_ssfr;
     case "dm_fraction":
       return galaxy.f_dm;
     case "mass":
