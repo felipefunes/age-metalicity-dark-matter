@@ -1,18 +1,21 @@
 import { useState } from "react";
 import { FilterPanel } from "./components/FilterPanel";
 import { GalaxyDetailDrawer } from "./components/GalaxyDetailDrawer";
-import { Header } from "./components/Header";
 import { HubbleTypeChart } from "./components/HubbleTypeChart";
+import { NavBar } from "./components/NavBar";
 import { ScatterPanel } from "./components/ScatterPanel";
 import type { GalaxyFilters } from "./api";
 import { useCorrelation } from "./hooks/useCorrelation";
 import { useGalaxies } from "./hooks/useGalaxies";
+import { useLocale } from "./i18n/LocaleContext";
 import { useUrlState } from "./hooks/useUrlState";
 
 export default function App() {
   const [state, update] = useUrlState();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedPgcId, setSelectedPgcId] = useState<number | null>(null);
+  const { t } = useLocale();
+  const d = t((dict) => dict);
 
   const filters: GalaxyFilters = {
     massMin: state.massMin,
@@ -33,19 +36,19 @@ export default function App() {
 
   return (
     <div className="app-shell">
-      <Header />
+      <NavBar />
 
-      <div className="app-body">
+      <section id="datos" className="app-body">
         <button
           className="mobile-drawer-toggle reset-filters"
           style={{ position: "fixed", bottom: 16, right: 16, zIndex: 30, width: "auto" }}
           onClick={() => setSidebarOpen(true)}
         >
-          Filtros ☰
+          {d.filter.mobileToggle} ☰
         </button>
 
         {/* Always visible on desktop; on narrow screens CSS hides it unless
-            sidebar--open is set (toggled by the floating "Filtros" button). */}
+            sidebar--open is set (toggled by the floating filter-toggle button). */}
         <aside className={`sidebar ${sidebarOpen ? "sidebar--open" : ""}`}>
           <FilterPanel
             state={state}
@@ -77,7 +80,7 @@ export default function App() {
             loading={loading}
           />
         </main>
-      </div>
+      </section>
 
       <GalaxyDetailDrawer pgcId={selectedPgcId} onClose={() => setSelectedPgcId(null)} />
     </div>

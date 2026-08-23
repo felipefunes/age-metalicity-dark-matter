@@ -78,6 +78,8 @@ export interface Dictionary {
     requireAge: string;
     ageHint: string;
     resetButton: string;
+    /** Floating mobile-only button that opens the filter drawer. */
+    mobileToggle: string;
   };
   /** ScatterPanel + HubbleTypeChart. */
   chart: {
@@ -99,5 +101,13 @@ export interface Dictionary {
     hubbleEmptyState: string;
     hubbleHint: string;
     hubbleSourceSuffix: string;
+  };
+  nav: {
+    /** Short 1-2 word wordmark next to the logo -- the full descriptive
+     * title lives in the Hero, this is just the compact nav brand. */
+    brand: string;
+    dataLink: string;
+    sourcesLink: string;
+    languageLabel: string;
   };
 }

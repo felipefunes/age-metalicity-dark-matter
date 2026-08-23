@@ -87,6 +87,7 @@ export const pt: Dictionary = {
     requireAge: "Apenas galáxias com idade estelar estrita disponível",
     ageHint: "Limita a galáxias com uma medição direta de idade estelar (não um proxy), quando disponível.",
     resetButton: "Redefinir filtros",
+    mobileToggle: "Filtros",
   },
   chart: {
     controlForMass: "Controlar correlação por massa",
@@ -106,5 +107,11 @@ export const pt: Dictionary = {
     hubbleHint:
       "Cada caixa resume a fração de matéria escura das galáxias daquele tipo morfológico; os pontos são galáxias individuais, clicáveis.",
     hubbleSourceSuffix: "— T discreto/ordinal, agrupado por tipo",
+  },
+  nav: {
+    brand: "Matéria Escura",
+    dataLink: "Dados",
+    sourcesLink: "Fontes",
+    languageLabel: "Idioma",
   },
 };

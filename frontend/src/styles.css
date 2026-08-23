@@ -79,73 +79,79 @@ a {
   gap: 20px;
 }
 
-/* ---------- Header ---------- */
+/* ---------- Nav bar ---------- */
 
-.site-header {
-  border-bottom: 1px solid var(--border);
-  background: var(--bg-panel);
-  padding: 16px 24px;
-}
-
-.site-header__top {
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 15;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
+  padding: 10px 24px;
+  background: rgba(18, 18, 24, 0.85);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
 }
 
-.site-header h1 {
-  font-size: 18px;
-  margin: 0;
+.navbar__brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 14px;
   font-weight: 600;
   letter-spacing: -0.01em;
+  padding: 0;
 }
 
-.site-header__toggle {
-  background: transparent;
-  border: 1px solid var(--border);
+.navbar__right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.navbar__link {
   color: var(--text-secondary);
-  padding: 6px 10px;
-  border-radius: 4px;
+  font-size: 13px;
+  text-decoration: none;
 }
 
-.site-header__toggle:hover {
+.navbar__link:hover {
   color: var(--text-primary);
-  border-color: var(--text-secondary);
 }
 
-.site-header__body {
-  margin-top: 14px;
-  max-width: 860px;
-  color: var(--text-secondary);
+.navbar__locale {
+  display: flex;
+  gap: 2px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px;
 }
 
-.site-header__body p {
-  margin: 0 0 10px;
-}
-
-.site-header__sources {
-  margin-top: 14px;
-  padding-top: 14px;
-  border-top: 1px solid var(--border);
-}
-
-.site-header__sources h2 {
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+.navbar__locale-btn {
+  background: transparent;
+  border: none;
   color: var(--text-muted);
-  margin: 0 0 8px;
-  font-weight: 600;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  padding: 3px 7px;
+  border-radius: 3px;
 }
 
-.site-header__sources ul {
-  margin: 0;
-  padding-left: 18px;
+.navbar__locale-btn--active {
+  background: var(--bg-panel-raised);
+  color: var(--accent-cyan);
 }
 
-.site-header__sources li {
-  margin-bottom: 4px;
+/* Anchor-jump targets land below the sticky navbar instead of under it. */
+#datos,
+#fuentes {
+  scroll-margin-top: 64px;
 }
 
 .disclaimer {

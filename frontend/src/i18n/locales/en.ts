@@ -87,6 +87,7 @@ export const en: Dictionary = {
     requireAge: "Only galaxies with a strict stellar age available",
     ageHint: "Limits to galaxies with a direct stellar-age measurement (not a proxy), when available.",
     resetButton: "Reset filters",
+    mobileToggle: "Filters",
   },
   chart: {
     controlForMass: "Control correlation for mass",
@@ -105,5 +106,11 @@ export const en: Dictionary = {
     hubbleHint:
       "Each box summarizes the dark matter fraction of galaxies of that morphological type; the points are individual, clickable galaxies.",
     hubbleSourceSuffix: "— T is discrete/ordinal, grouped by type",
+  },
+  nav: {
+    brand: "Dark Matter",
+    dataLink: "Data",
+    sourcesLink: "Sources",
+    languageLabel: "Language",
   },
 };
