@@ -28,6 +28,8 @@ VARIABLES = {
     "hubble_type": "T",
     "age_gyr": "age_gyr",
     "age_proxy_ssfr": "age_proxy_ssfr",
+    "age_proxy_dn4000": "age_proxy_dn4000",
+    "age_proxy_hdelta_a": "age_proxy_hdelta_a",
     "dm_fraction": "f_dm",
     "mass": "l36",
     "mhi": "mhi",
