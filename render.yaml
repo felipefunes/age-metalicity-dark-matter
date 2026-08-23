@@ -26,12 +26,7 @@ services:
       # Proxies /api/* to the API service's public URL so the browser
       # never makes a cross-origin request (same pattern as the nginx
       # config used for local docker-compose, frontend/nginx.conf).
-      # NOTE: verify this resolves correctly after the first deploy --
-      # Render's exact wildcard-forwarding behavior for an external
-      # destination wasn't fully confirmed from public docs; if /api/*
-      # doesn't route the full path+query correctly, adjust this rule
-      # from the Render dashboard (Static Site -> Redirects/Rewrites),
-      # no redeploy needed.
+      # Verified working in production after the first deploy.
       - type: rewrite
         source: /api/*
         destination: https://age-metalicity-dark-matter-api.onrender.com/*

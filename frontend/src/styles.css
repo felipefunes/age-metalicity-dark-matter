@@ -1,5 +1,6 @@
 :root {
   --bg: #0a0a0f;
+  --bg-section: #0e0e15;
   --bg-panel: #121218;
   --bg-panel-raised: #17171f;
   --border: #26262f;
@@ -12,6 +13,7 @@
 
   --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
 
   --header-height: auto;
   --sidebar-width: 320px;
@@ -64,93 +66,233 @@ a {
   min-height: 100vh;
 }
 
+.app-section {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  background: var(--bg-section);
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(20px, 2.4vw, 28px);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 28px 24px 4px;
+}
+
 .app-body {
   display: flex;
   flex: 1;
   min-height: 0;
+  gap: 20px;
+  padding: 20px;
 }
 
 .main-content {
   flex: 1;
   min-width: 0;
-  padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-/* ---------- Header ---------- */
+/* ---------- Nav bar ---------- */
 
-.site-header {
-  border-bottom: 1px solid var(--border);
-  background: var(--bg-panel);
-  padding: 16px 24px;
-}
-
-.site-header__top {
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 15;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
+  padding: 10px 24px;
+  background: rgba(18, 18, 24, 0.85);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
 }
 
-.site-header h1 {
-  font-size: 18px;
-  margin: 0;
+.navbar__brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 14px;
   font-weight: 600;
   letter-spacing: -0.01em;
+  padding: 0;
 }
 
-.site-header__toggle {
-  background: transparent;
-  border: 1px solid var(--border);
+.navbar__right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.navbar__link {
   color: var(--text-secondary);
-  padding: 6px 10px;
-  border-radius: 4px;
+  font-size: 13px;
+  text-decoration: none;
 }
 
-.site-header__toggle:hover {
+.navbar__link:hover {
   color: var(--text-primary);
-  border-color: var(--text-secondary);
 }
 
-.site-header__body {
-  margin-top: 14px;
-  max-width: 860px;
-  color: var(--text-secondary);
+.navbar__locale {
+  display: flex;
+  gap: 2px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px;
 }
 
-.site-header__body p {
-  margin: 0 0 10px;
-}
-
-.site-header__sources {
-  margin-top: 14px;
-  padding-top: 14px;
-  border-top: 1px solid var(--border);
-}
-
-.site-header__sources h2 {
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+.navbar__locale-btn {
+  background: transparent;
+  border: none;
   color: var(--text-muted);
-  margin: 0 0 8px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  padding: 3px 7px;
+  border-radius: 3px;
+}
+
+.navbar__locale-btn--active {
+  background: var(--bg-panel-raised);
+  color: var(--accent-cyan);
+}
+
+/* Anchor-jump targets land below the sticky navbar instead of under it. */
+#datos,
+#fuentes {
+  scroll-margin-top: 64px;
+}
+
+/* ---------- Hero ---------- */
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 72px 24px 52px;
+  text-align: center;
+  background-color: var(--bg);
+  /* Layered small radial-gradient dots (stars) + two soft color blurs
+   * (nebula), hand-authored instead of a photo -- always on-theme, no
+   * licensing/attribution concerns, renders identically everywhere. */
+  background-image: radial-gradient(1.6px 1.6px at 6% 22%, rgba(232, 232, 240, 0.85), transparent),
+    radial-gradient(1.2px 1.2px at 14% 68%, rgba(232, 232, 240, 0.6), transparent),
+    radial-gradient(1.8px 1.8px at 24% 38%, rgba(232, 232, 240, 0.75), transparent),
+    radial-gradient(1.2px 1.2px at 33% 82%, rgba(232, 232, 240, 0.55), transparent),
+    radial-gradient(1.4px 1.4px at 42% 15%, rgba(232, 232, 240, 0.7), transparent),
+    radial-gradient(1.1px 1.1px at 52% 55%, rgba(232, 232, 240, 0.5), transparent),
+    radial-gradient(1.7px 1.7px at 61% 28%, rgba(232, 232, 240, 0.8), transparent),
+    radial-gradient(1.2px 1.2px at 69% 72%, rgba(232, 232, 240, 0.55), transparent),
+    radial-gradient(1.5px 1.5px at 78% 40%, rgba(232, 232, 240, 0.7), transparent),
+    radial-gradient(1.1px 1.1px at 87% 20%, rgba(232, 232, 240, 0.5), transparent),
+    radial-gradient(1.8px 1.8px at 92% 62%, rgba(232, 232, 240, 0.8), transparent),
+    radial-gradient(1.3px 1.3px at 9% 90%, rgba(232, 232, 240, 0.6), transparent),
+    radial-gradient(1.3px 1.3px at 96% 88%, rgba(232, 232, 240, 0.6), transparent),
+    radial-gradient(ellipse 55% 45% at 18% 12%, rgba(34, 211, 238, 0.12), transparent 70%),
+    radial-gradient(ellipse 50% 40% at 85% 85%, rgba(167, 139, 250, 0.12), transparent 70%);
+  animation: hero-twinkle 6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero {
+    animation: none;
+  }
+}
+
+@keyframes hero-twinkle {
+  0%,
+  100% {
+    background-position:
+      0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0;
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.88;
+  }
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10, 10, 15, 0.4) 0%, rgba(10, 10, 15, 0.8) 100%);
+  pointer-events: none;
+}
+
+.hero__inner {
+  position: relative;
+  z-index: 1;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.hero__title {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 5vw, 46px);
   font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  margin: 0 0 22px;
+  color: var(--text-primary);
+  text-shadow: 0 2px 28px rgba(0, 0, 0, 0.7);
 }
 
-.site-header__sources ul {
-  margin: 0;
-  padding-left: 18px;
+.hero__intro {
+  color: var(--text-secondary);
+  font-size: 15px;
+  line-height: 1.65;
+  margin: 0 0 14px;
 }
 
-.site-header__sources li {
-  margin-bottom: 4px;
+.hero__intro strong {
+  color: var(--text-primary);
 }
 
-.disclaimer {
+.hero__disclaimer {
   color: var(--accent-violet);
   font-size: 12.5px;
+  margin: 18px 0 0;
+}
+
+/* ---------- Sources section + footer ---------- */
+
+.sources-section {
+  background: var(--bg);
+  padding: 8px 24px 36px;
+}
+
+.sources-list {
+  max-width: 860px;
+  margin: 12px 0 0;
+  padding-left: 0;
+  list-style-position: inside;
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.sources-list li {
+  margin-bottom: 10px;
+}
+
+.site-footer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 18px 24px 28px;
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 12px;
 }
 
 /* ---------- Layout: sidebar + drawer ---------- */
@@ -158,9 +300,14 @@ a {
 .sidebar {
   width: var(--sidebar-width);
   flex-shrink: 0;
-  border-right: 1px solid var(--border);
+  /* Same border/radius/padding as .panel, so the sidebar reads as a card
+     next to the chart cards instead of a plain full-height strip -- both
+     now sit inside .app-body's own padding, so their top edges align
+     exactly regardless of what's inside either one. */
+  border: 1px solid var(--border);
+  border-radius: 6px;
   background: var(--bg-panel);
-  padding: 18px;
+  padding: 16px;
   overflow-y: auto;
 }
 
@@ -179,7 +326,11 @@ a {
     inset: 0 15% 0 0;
     z-index: 40;
     width: auto;
+    /* Full-bleed drawer on mobile -- undo the desktop card look (rounded
+       corners read oddly on a full-height slide-out panel). */
+    border: none;
     border-right: 1px solid var(--border);
+    border-radius: 0;
   }
 
   .sidebar.sidebar--open {
@@ -208,6 +359,13 @@ a {
   color: var(--text-muted);
   margin: 0 0 10px;
   font-weight: 600;
+}
+
+.filter-hint {
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: var(--text-muted);
+  margin: -6px 0 10px;
 }
 
 .filter-row {
@@ -340,6 +498,13 @@ select {
   font-size: 14px;
   margin: 0;
   font-weight: 600;
+}
+
+.panel-hint {
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: var(--text-muted);
+  margin: -4px 0 12px;
 }
 
 .axis-controls {

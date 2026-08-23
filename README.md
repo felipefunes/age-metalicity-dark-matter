@@ -62,7 +62,9 @@ la versión anterior esté mal: puede ser que la confirme en vez de corregirla.
 
 - **Pipeline**: Python (pandas, astropy, scipy, statsmodels, astroquery, requests)
 - **API**: FastAPI + SQLite
-- **Frontend**: React + TypeScript + Plotly.js (ver justificación abajo)
+- **Frontend**: React + TypeScript + Plotly.js (ver justificación abajo). i18n hecho a mano
+  (sin librería) con detección de idioma del navegador (en/es/pt, fallback inglés) y selector
+  manual en la barra de navegación — ver `frontend/src/i18n/`.
 - **Docker Compose** para reproducibilidad completa (pipeline → API → frontend)
 
 ### ¿Por qué Plotly.js y no Recharts?
@@ -166,6 +168,10 @@ depende de que los servicios externos estén arriba — eso lo cubre el pipeline
 
 ## Producción (Render, plan gratuito)
 
+Desplegado en:
+- Frontend: https://age-metalicity-dark-matter-frontend.onrender.com
+- API: https://age-metalicity-dark-matter-api.onrender.com (`/health`, `/galaxies`, `/correlations`)
+
 `render.yaml` define dos servicios (deploy vía el dashboard de Render: **New → Blueprint**,
 apuntando a este repo en GitHub):
 
@@ -187,10 +193,8 @@ apuntando a este repo en GitHub):
 - Sin refresco automático de datos: no hay cron gratis + disco persistente en Render, así que
   "datos frescos" significa "hacé un redeploy manual" (o triggereado desde GitHub), no una
   actualización periódica automática.
-- La regla de rewrite del frontend hacia la URL pública de la API no se pudo confirmar al 100%
-  contra la documentación pública de Render antes de escribirla — si `/api/*` no rutea bien
-  después del primer deploy, se ajusta desde el dashboard de Render (Static Site → Redirects/
-  Rewrites) sin necesidad de un redeploy.
+- La regla de rewrite `/api/*` del frontend hacia la URL pública de la API (documentada arriba
+  como potencialmente ambigua antes del primer deploy) quedó verificada funcionando en producción.
 
 ## Tests
 

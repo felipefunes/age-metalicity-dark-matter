@@ -86,13 +86,15 @@ export type ApiVariable =
   | "mhi";
 
 /** Axis variables offered in the continuous scatter (T is deliberately
- * excluded -- it is discrete/ordinal and gets its own chart). */
+ * excluded -- it is discrete/ordinal and gets its own chart). "metallicity"
+ * and "age_gyr" (generic HyperLeda columns) are deliberately excluded here
+ * even though the API still exposes them via ApiVariable -- the pipeline has
+ * never successfully populated either (n=0 in every coverage report), so
+ * offering them in the picker only ever produces an empty chart. */
 export type ScatterAxis =
-  | "metallicity"
   | "metallicity_kk04"
   | "metallicity_pt05"
   | "metallicity_pilyugin2014"
-  | "age_gyr"
   | "age_proxy_ssfr"
   | "age_proxy_dn4000"
   | "age_proxy_hdelta_a"

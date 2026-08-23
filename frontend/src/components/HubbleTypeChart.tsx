@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import Plot from "react-plotly.js";
 import type { Layout, PlotData } from "plotly.js-dist-min";
 import type { GalaxyFilters } from "../api";
+import { useLocale } from "../i18n/LocaleContext";
 import { useCorrelation } from "../hooks/useCorrelation";
 import type { GalaxySummary } from "../types";
 import { HUBBLE_TYPE_LABELS, formatPValue, hubbleTypeLabel } from "../utils/format";
@@ -28,6 +29,8 @@ export function HubbleTypeChart({
   onPointClick,
   loading,
 }: HubbleTypeChartProps) {
+  const { t } = useLocale();
+  const d = t((dict) => dict);
   const correlation = useCorrelation(
     "hubble_type",
     "dm_fraction",
@@ -55,7 +58,7 @@ export function HubbleTypeChart({
   };
 
   const annotationText = correlation.result
-    ? `${controlForMass ? "Spearman parcial (control: masa)" : "Spearman"}: ` +
+    ? `${controlForMass ? d.chart.spearmanPartialMass : d.chart.spearman}: ` +
       `ρ = ${correlation.result.coefficient !== null ? correlation.result.coefficient.toFixed(3) : "—"}, ` +
       `${formatPValue(correlation.result.p_value)}, n = ${correlation.result.n}`
     : "";
@@ -67,14 +70,14 @@ export function HubbleTypeChart({
     plot_bgcolor: "transparent",
     font: { color: "#e8e8f0", family: "Inter, system-ui, sans-serif", size: 12 },
     xaxis: {
-      title: { text: "Tipo de Hubble (T)" },
+      title: { text: d.axis.hubble_type.label },
       categoryorder: "array",
       categoryarray: TYPE_ORDER,
       gridcolor: "#26262f",
       color: "#9a9aad",
     },
     yaxis: {
-      title: { text: "Fracción de materia oscura (f_DM)" },
+      title: { text: d.axis.dm_fraction.label },
       range: [0, 1],
       gridcolor: "#26262f",
       color: "#9a9aad",
@@ -102,20 +105,19 @@ export function HubbleTypeChart({
   return (
     <div className="panel">
       <div className="panel-title-row">
-        <h2>f_DM por tipo de Hubble (proxy morfológico de edad)</h2>
+        <h2>{d.chart.hubbleTitle}</h2>
         <label className="control-toggle">
           <input
             type="checkbox"
             checked={controlForMass}
             onChange={(e) => onControlForMassChange(e.target.checked)}
           />
-          Controlar correlación por masa
+          {d.chart.controlForMass}
         </label>
       </div>
-      {loading && <div className="status-text">Cargando…</div>}
-      {!loading && points.length === 0 && (
-        <div className="status-text">No hay galaxias con T y f_DM disponibles con los filtros actuales.</div>
-      )}
+      <p className="panel-hint">{d.chart.hubbleHint}</p>
+      {loading && <div className="status-text">{d.common.loading}</div>}
+      {!loading && points.length === 0 && <div className="status-text">{d.chart.hubbleEmptyState}</div>}
       {!loading && points.length > 0 && (
         <Plot
           data={[trace]}
@@ -130,8 +132,10 @@ export function HubbleTypeChart({
         />
       )}
       <div className="chart-footer">
-        <span>Fuente: SPARC (Lelli, McGaugh &amp; Schombert 2016) — T discreto/ordinal, agrupado por tipo</span>
-        <span>n = {points.length} galaxias graficadas</span>
+        <span>
+          {d.chart.sourcePrefix} SPARC (Lelli, McGaugh &amp; Schombert 2016) {d.chart.hubbleSourceSuffix}
+        </span>
+        <span>{d.chart.nPlotted(points.length)}</span>
       </div>
     </div>
   );
