@@ -79,4 +79,25 @@ export interface Dictionary {
     ageHint: string;
     resetButton: string;
   };
+  /** ScatterPanel + HubbleTypeChart. */
+  chart: {
+    controlForMass: string;
+    errorPrefix: string;
+    spearman: string;
+    spearmanPartialMass: string;
+    /** "Source:" -- the citation itself (author/year) stays literal, only
+     * this leading word and any surrounding description are translated. */
+    sourcePrefix: string;
+    nPlotted: (n: number) => string;
+    scatterEmptyState: (xLabel: string, yLabel: string) => string;
+    scatterHint: string;
+    scatterLogSuffix: string;
+    /** Label for the match-method word in the scatter's hover tooltip
+     * (the value itself is looked up via dict.matchMethod). */
+    hoverCrossLabel: string;
+    hubbleTitle: string;
+    hubbleEmptyState: string;
+    hubbleHint: string;
+    hubbleSourceSuffix: string;
+  };
 }

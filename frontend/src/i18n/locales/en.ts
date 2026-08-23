@@ -88,4 +88,22 @@ export const en: Dictionary = {
     ageHint: "Limits to galaxies with a direct stellar-age measurement (not a proxy), when available.",
     resetButton: "Reset filters",
   },
+  chart: {
+    controlForMass: "Control correlation for mass",
+    errorPrefix: "Error loading data",
+    spearman: "Spearman",
+    spearmanPartialMass: "Partial Spearman (control: mass)",
+    sourcePrefix: "Source:",
+    nPlotted: (n) => `n = ${n} galaxies plotted`,
+    scatterEmptyState: (xLabel, yLabel) =>
+      `No galaxies have data for both ${xLabel} and ${yLabel} under the current filters.`,
+    scatterHint: "Hover a point for details, click it to open the galaxy's full record. Drag to zoom.",
+    scatterLogSuffix: " (log scale)",
+    hoverCrossLabel: "cross-match:",
+    hubbleTitle: "f_DM by Hubble type (morphological age proxy)",
+    hubbleEmptyState: "No galaxies have both T and f_DM available under the current filters.",
+    hubbleHint:
+      "Each box summarizes the dark matter fraction of galaxies of that morphological type; the points are individual, clickable galaxies.",
+    hubbleSourceSuffix: "— T is discrete/ordinal, grouped by type",
+  },
 };

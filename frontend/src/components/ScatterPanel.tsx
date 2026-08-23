@@ -38,8 +38,9 @@ export function ScatterPanel({
   error,
 }: ScatterPanelProps) {
   const { t } = useLocale();
-  const axisLabel = (axis: ScatterAxis) => t((d) => d.axis[axis].label);
-  const axisSource = (axis: ScatterAxis) => t((d) => d.axis[axis].source);
+  const d = t((dict) => dict);
+  const axisLabel = (axis: ScatterAxis) => d.axis[axis].label;
+  const axisSource = (axis: ScatterAxis) => d.axis[axis].source;
 
   const points = useMemo(() => {
     return galaxies
@@ -78,7 +79,11 @@ export function ScatterPanel({
       name: "Galaxias",
       x: points.map((p) => p.x),
       y: points.map((p) => p.y),
-      customdata: points.map((p) => [p.galaxy.name_sparc, p.galaxy.pgc_id, p.galaxy.match_method]),
+      customdata: points.map((p) => [
+        p.galaxy.name_sparc,
+        p.galaxy.pgc_id,
+        d.matchMethod[p.galaxy.match_method],
+      ]),
       marker: {
         size: MARKER_SIZE,
         color: points.map((p) => Math.log10(p.mass)),
@@ -115,7 +120,7 @@ export function ScatterPanel({
         "<b>%{customdata[0]}</b> (PGC %{customdata[1]})<br>" +
         `${axisLabel(xAxis)}: %{x}<br>` +
         `${axisLabel(yAxis)}: %{y}<br>` +
-        "cruce: %{customdata[2]}<extra></extra>",
+        `${d.chart.hoverCrossLabel} %{customdata[2]}<extra></extra>`,
     };
 
     const allTraces: Partial<PlotData>[] = [];
@@ -170,7 +175,7 @@ export function ScatterPanel({
     allTraces.push(scatterTrace);
 
     const annotationText = correlation
-      ? `${controlForMass ? "Spearman parcial (control: masa)" : "Spearman"}: ` +
+      ? `${controlForMass ? d.chart.spearmanPartialMass : d.chart.spearman}: ` +
         `ρ = ${correlation.coefficient !== null ? correlation.coefficient.toFixed(3) : "—"}, ` +
         `${formatPValue(correlation.p_value)}, n = ${correlation.n}`
       : "";
@@ -182,7 +187,7 @@ export function ScatterPanel({
       plot_bgcolor: "transparent",
       font: { color: "#e8e8f0", family: "Inter, system-ui, sans-serif", size: 12 },
       xaxis: {
-        title: { text: `${axisLabel(xAxis)}${xLog ? " (escala log)" : ""}` },
+        title: { text: `${axisLabel(xAxis)}${xLog ? d.chart.scatterLogSuffix : ""}` },
         type: xLog ? "log" : "linear",
         gridcolor: "#26262f",
         zerolinecolor: "#26262f",
@@ -217,7 +222,7 @@ export function ScatterPanel({
     };
 
     return { traces: allTraces, layout: plotLayout };
-  }, [points, xAxis, yAxis, xLog, yLog, regression, correlation, controlForMass, t]);
+  }, [points, xAxis, yAxis, xLog, yLog, regression, correlation, controlForMass, d]);
 
   return (
     <div className="panel">
@@ -231,17 +236,19 @@ export function ScatterPanel({
             checked={controlForMass}
             onChange={(e) => onControlForMassChange(e.target.checked)}
           />
-          Controlar correlación por masa
+          {d.chart.controlForMass}
         </label>
       </div>
+      <p className="panel-hint">{d.chart.scatterHint}</p>
 
-      {error && <div className="status-text error">Error cargando datos: {error}</div>}
-      {!error && loading && <div className="status-text">Cargando…</div>}
-      {!error && !loading && points.length === 0 && (
-        <div className="status-text">
-          No hay galaxias con datos disponibles para {axisLabel(xAxis)} y {axisLabel(yAxis)} con
-          los filtros actuales.
+      {error && (
+        <div className="status-text error">
+          {d.chart.errorPrefix}: {error}
         </div>
+      )}
+      {!error && loading && <div className="status-text">{d.common.loading}</div>}
+      {!error && !loading && points.length === 0 && (
+        <div className="status-text">{d.chart.scatterEmptyState(axisLabel(xAxis), axisLabel(yAxis))}</div>
       )}
       {!error && !loading && points.length > 0 && (
         <Plot
@@ -259,12 +266,12 @@ export function ScatterPanel({
 
       <div className="chart-footer">
         <span>
-          Fuente: SPARC (Lelli, McGaugh &amp; Schombert 2016)
+          {d.chart.sourcePrefix} SPARC (Lelli, McGaugh &amp; Schombert 2016)
           {Array.from(new Set([axisSource(xAxis), axisSource(yAxis)].filter(Boolean))).map(
             (source) => ` · ${source}`,
           )}
         </span>
-        <span>n = {points.length} galaxias graficadas</span>
+        <span>{d.chart.nPlotted(points.length)}</span>
       </div>
     </div>
   );

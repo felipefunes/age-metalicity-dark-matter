@@ -88,4 +88,23 @@ export const es: Dictionary = {
     ageHint: "Limita a galaxias con una medición de edad estelar directa (no un proxy), cuando esté disponible.",
     resetButton: "Restablecer filtros",
   },
+  chart: {
+    controlForMass: "Controlar correlación por masa",
+    errorPrefix: "Error cargando datos",
+    spearman: "Spearman",
+    spearmanPartialMass: "Spearman parcial (control: masa)",
+    sourcePrefix: "Fuente:",
+    nPlotted: (n) => `n = ${n} galaxias graficadas`,
+    scatterEmptyState: (xLabel, yLabel) =>
+      `No hay galaxias con datos disponibles para ${xLabel} y ${yLabel} con los filtros actuales.`,
+    scatterHint:
+      "Pasá el mouse sobre un punto para ver detalles, hacé clic para abrir la ficha completa de la galaxia. Arrastrá para hacer zoom.",
+    scatterLogSuffix: " (escala log)",
+    hoverCrossLabel: "cruce:",
+    hubbleTitle: "f_DM por tipo de Hubble (proxy morfológico de edad)",
+    hubbleEmptyState: "No hay galaxias con T y f_DM disponibles con los filtros actuales.",
+    hubbleHint:
+      "Cada caja resume la fracción de materia oscura de las galaxias de ese tipo morfológico; los puntos son galaxias individuales, cliqueables.",
+    hubbleSourceSuffix: "— T discreto/ordinal, agrupado por tipo",
+  },
 };
