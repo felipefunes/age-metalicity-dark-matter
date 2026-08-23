@@ -1,8 +1,9 @@
 import { useMemo } from "react";
 import Plot from "react-plotly.js";
 import type { Layout, PlotData } from "plotly.js-dist-min";
+import { useLocale } from "../i18n/LocaleContext";
 import type { CorrelationResponse, GalaxySummary, ScatterAxis } from "../types";
-import { AXIS_LABELS, AXIS_SOURCE, formatPValue } from "../utils/format";
+import { formatPValue } from "../utils/format";
 import { axisError, axisValue, isLogAxis } from "../utils/galaxyFields";
 import { fitLinearRegression } from "../utils/regression";
 
@@ -36,6 +37,10 @@ export function ScatterPanel({
   loading,
   error,
 }: ScatterPanelProps) {
+  const { t } = useLocale();
+  const axisLabel = (axis: ScatterAxis) => t((d) => d.axis[axis].label);
+  const axisSource = (axis: ScatterAxis) => t((d) => d.axis[axis].source);
+
   const points = useMemo(() => {
     return galaxies
       .map((g) => ({
@@ -108,8 +113,8 @@ export function ScatterPanel({
         : undefined,
       hovertemplate:
         "<b>%{customdata[0]}</b> (PGC %{customdata[1]})<br>" +
-        `${AXIS_LABELS[xAxis]}: %{x}<br>` +
-        `${AXIS_LABELS[yAxis]}: %{y}<br>` +
+        `${axisLabel(xAxis)}: %{x}<br>` +
+        `${axisLabel(yAxis)}: %{y}<br>` +
         "cruce: %{customdata[2]}<extra></extra>",
     };
 
@@ -177,14 +182,14 @@ export function ScatterPanel({
       plot_bgcolor: "transparent",
       font: { color: "#e8e8f0", family: "Inter, system-ui, sans-serif", size: 12 },
       xaxis: {
-        title: { text: `${AXIS_LABELS[xAxis]}${xLog ? " (escala log)" : ""}` },
+        title: { text: `${axisLabel(xAxis)}${xLog ? " (escala log)" : ""}` },
         type: xLog ? "log" : "linear",
         gridcolor: "#26262f",
         zerolinecolor: "#26262f",
         color: "#9a9aad",
       },
       yaxis: {
-        title: { text: AXIS_LABELS[yAxis] },
+        title: { text: axisLabel(yAxis) },
         type: yLog ? "log" : "linear",
         range: yAxis === "dm_fraction" ? [0, 1] : undefined,
         gridcolor: "#26262f",
@@ -212,13 +217,13 @@ export function ScatterPanel({
     };
 
     return { traces: allTraces, layout: plotLayout };
-  }, [points, xAxis, yAxis, xLog, yLog, regression, correlation, controlForMass]);
+  }, [points, xAxis, yAxis, xLog, yLog, regression, correlation, controlForMass, t]);
 
   return (
     <div className="panel">
       <div className="panel-title-row">
         <h2>
-          {AXIS_LABELS[yAxis]} vs. {AXIS_LABELS[xAxis]}
+          {axisLabel(yAxis)} vs. {axisLabel(xAxis)}
         </h2>
         <label className="control-toggle">
           <input
@@ -234,7 +239,7 @@ export function ScatterPanel({
       {!error && loading && <div className="status-text">Cargando…</div>}
       {!error && !loading && points.length === 0 && (
         <div className="status-text">
-          No hay galaxias con datos disponibles para {AXIS_LABELS[xAxis]} y {AXIS_LABELS[yAxis]} con
+          No hay galaxias con datos disponibles para {axisLabel(xAxis)} y {axisLabel(yAxis)} con
           los filtros actuales.
         </div>
       )}
@@ -255,7 +260,7 @@ export function ScatterPanel({
       <div className="chart-footer">
         <span>
           Fuente: SPARC (Lelli, McGaugh &amp; Schombert 2016)
-          {Array.from(new Set([AXIS_SOURCE[xAxis], AXIS_SOURCE[yAxis]].filter(Boolean))).map(
+          {Array.from(new Set([axisSource(xAxis), axisSource(yAxis)].filter(Boolean))).map(
             (source) => ` · ${source}`,
           )}
         </span>

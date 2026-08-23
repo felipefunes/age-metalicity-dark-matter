@@ -1,9 +1,10 @@
 import { useMemo } from "react";
 import { DualRangeSlider } from "./DualRangeSlider";
+import { useLocale } from "../i18n/LocaleContext";
 import { useMassDomain } from "../hooks/useMassDomain";
 import type { AppState } from "../hooks/useUrlState";
 import type { GalaxySummary, MatchMethod, ScatterAxis } from "../types";
-import { AXIS_LABELS, SCATTER_AXIS_OPTIONS } from "../utils/format";
+import { SCATTER_AXIS_OPTIONS } from "../utils/format";
 import { axisValue } from "../utils/galaxyFields";
 
 interface FilterPanelProps {
@@ -27,6 +28,7 @@ function formatMass(value: number): string {
 
 export function FilterPanel({ state, update, onClose, galaxies }: FilterPanelProps) {
   const massDomain = useMassDomain();
+  const { t } = useLocale();
 
   const axisCounts = useMemo(() => {
     const counts = {} as Record<ScatterAxis, number>;
@@ -73,7 +75,7 @@ export function FilterPanel({ state, update, onClose, galaxies }: FilterPanelPro
             <select value={state.xAxis} onChange={(e) => update({ xAxis: e.target.value as ScatterAxis })}>
               {SCATTER_AXIS_OPTIONS.map((axis) => (
                 <option key={axis} value={axis}>
-                  {AXIS_LABELS[axis]} (n={axisCounts[axis]})
+                  {t((d) => d.axis[axis].label)} (n={axisCounts[axis]})
                 </option>
               ))}
             </select>
@@ -85,7 +87,7 @@ export function FilterPanel({ state, update, onClose, galaxies }: FilterPanelPro
             <select value={state.yAxis} onChange={(e) => update({ yAxis: e.target.value as ScatterAxis })}>
               {SCATTER_AXIS_OPTIONS.map((axis) => (
                 <option key={axis} value={axis}>
-                  {AXIS_LABELS[axis]} (n={axisCounts[axis]})
+                  {t((d) => d.axis[axis].label)} (n={axisCounts[axis]})
                 </option>
               ))}
             </select>

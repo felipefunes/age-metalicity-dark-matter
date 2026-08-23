@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import Plot from "react-plotly.js";
 import type { Layout, PlotData } from "plotly.js-dist-min";
 import type { GalaxyFilters } from "../api";
+import { useLocale } from "../i18n/LocaleContext";
 import { useCorrelation } from "../hooks/useCorrelation";
 import type { GalaxySummary } from "../types";
 import { HUBBLE_TYPE_LABELS, formatPValue, hubbleTypeLabel } from "../utils/format";
@@ -28,6 +29,7 @@ export function HubbleTypeChart({
   onPointClick,
   loading,
 }: HubbleTypeChartProps) {
+  const { t } = useLocale();
   const correlation = useCorrelation(
     "hubble_type",
     "dm_fraction",
@@ -67,14 +69,14 @@ export function HubbleTypeChart({
     plot_bgcolor: "transparent",
     font: { color: "#e8e8f0", family: "Inter, system-ui, sans-serif", size: 12 },
     xaxis: {
-      title: { text: "Tipo de Hubble (T)" },
+      title: { text: t((d) => d.axis.hubble_type.label) },
       categoryorder: "array",
       categoryarray: TYPE_ORDER,
       gridcolor: "#26262f",
       color: "#9a9aad",
     },
     yaxis: {
-      title: { text: "Fracción de materia oscura (f_DM)" },
+      title: { text: t((d) => d.axis.dm_fraction.label) },
       range: [0, 1],
       gridcolor: "#26262f",
       color: "#9a9aad",
