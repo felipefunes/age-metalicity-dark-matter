@@ -114,4 +114,18 @@ export const es: Dictionary = {
     sourcesLink: "Fuentes",
     languageLabel: "Idioma",
   },
+  hero: {
+    intro1Before: "Esta herramienta cruza datos públicos de cinemática galáctica (",
+    intro1After:
+      ") con metalicidad y edad estelar de catálogos externos (HyperLeda, NED), resueltos a un identificador canónico PGC por galaxia.",
+    intro2Before:
+      "El objetivo es explorar si existe correlación entre la fracción de materia oscura de una galaxia y su metalicidad o edad, ",
+    intro2Bold: "controlando por masa",
+    intro2After:
+      " — porque una correlación cruda entre metalicidad y materia oscura puede ser espuria si ambas dependen de la masa de la galaxia.",
+    disclaimer: "Es una herramienta exploratoria, no una fuente con conclusiones validadas por revisión de pares.",
+  },
+  section: {
+    datosTitle: "Explorá los datos",
+  },
 };

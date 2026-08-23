@@ -110,4 +110,23 @@ export interface Dictionary {
     sourcesLink: string;
     languageLabel: string;
   };
+  /** Hero masthead. The big title itself reuses common.siteTitle rather
+   * than duplicating it. Paragraphs are split around the one inline link
+   * (SPARC) and the one bold emphasis ("controlling for mass") since
+   * dictionary values are plain strings, not JSX -- the wrapper elements
+   * stay fixed in Hero.tsx, only the surrounding text is translated. */
+  hero: {
+    intro1Before: string;
+    intro1After: string;
+    intro2Before: string;
+    intro2Bold: string;
+    intro2After: string;
+    disclaimer: string;
+  };
+  /** Section headings outside the hero (magazine-style but smaller). Only
+   * "datos" is here for now -- "fuentes" is added alongside its section
+   * component in a later commit. */
+  section: {
+    datosTitle: string;
+  };
 }

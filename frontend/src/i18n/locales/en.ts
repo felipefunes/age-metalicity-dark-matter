@@ -113,4 +113,18 @@ export const en: Dictionary = {
     sourcesLink: "Sources",
     languageLabel: "Language",
   },
+  hero: {
+    intro1Before: "This tool cross-matches public galaxy kinematics data (",
+    intro1After:
+      ") with metallicity and stellar age from external catalogs (HyperLeda, NED), resolved to a canonical PGC identifier per galaxy.",
+    intro2Before:
+      "The goal is to explore whether a galaxy's dark matter fraction correlates with its metallicity or age, ",
+    intro2Bold: "controlling for mass",
+    intro2After:
+      " — because a raw correlation between metallicity and dark matter can be spurious if both depend on the galaxy's mass.",
+    disclaimer: "This is an exploratory tool, not a source of peer-reviewed, validated conclusions.",
+  },
+  section: {
+    datosTitle: "Explore the data",
+  },
 };
