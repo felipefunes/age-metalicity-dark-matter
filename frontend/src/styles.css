@@ -72,7 +72,6 @@ a {
   flex: 1;
   min-height: 0;
   background: var(--bg-section);
-  padding-top: 24px;
 }
 
 .section-title {
@@ -87,17 +86,13 @@ a {
   display: flex;
   flex: 1;
   min-height: 0;
+  gap: 20px;
+  padding: 20px;
 }
 
 .main-content {
   flex: 1;
   min-width: 0;
-  /* Top padding is 3px, not 20px like the other sides: the first child is
-     always a .panel, which already has its own 1px border + 16px padding
-     before its heading -- 3 + 1 + 16 = 20px, so the panel's h2 lands at
-     the exact same Y as the sidebar's first heading (sidebar has no such
-     nested card, so its flat 20px padding reaches its heading directly). */
-  padding: 3px 20px 20px;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -305,9 +300,14 @@ a {
 .sidebar {
   width: var(--sidebar-width);
   flex-shrink: 0;
-  border-right: 1px solid var(--border);
+  /* Same border/radius/padding as .panel, so the sidebar reads as a card
+     next to the chart cards instead of a plain full-height strip -- both
+     now sit inside .app-body's own padding, so their top edges align
+     exactly regardless of what's inside either one. */
+  border: 1px solid var(--border);
+  border-radius: 6px;
   background: var(--bg-panel);
-  padding: 20px;
+  padding: 16px;
   overflow-y: auto;
 }
 
@@ -326,7 +326,11 @@ a {
     inset: 0 15% 0 0;
     z-index: 40;
     width: auto;
+    /* Full-bleed drawer on mobile -- undo the desktop card look (rounded
+       corners read oddly on a full-height slide-out panel). */
+    border: none;
     border-right: 1px solid var(--border);
+    border-radius: 0;
   }
 
   .sidebar.sidebar--open {
