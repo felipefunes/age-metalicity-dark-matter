@@ -127,5 +127,21 @@ export const es: Dictionary = {
   },
   section: {
     datosTitle: "Explorá los datos",
+    fuentesTitle: "Fuentes de datos",
+  },
+  sources: {
+    sparc: "cinemática, tipo de Hubble, luminosidad [3.6μm], masa de HI.",
+    hyperleda: "parámetros extragalácticos por objeto (metalicidad/edad cuando están disponibles).",
+    nedSimbad: "resolución de identidad a PGC (por nombre o, si falla, por coordenadas).",
+    moustakas: "metalicidad (dos calibraciones, KK04 y PT05).",
+    pilyugin: "metalicidad, fuente independiente.",
+    z0mgs: "proxy de edad vía sSFR, no una edad estelar en sentido estricto.",
+    dn4000Hdelta:
+      "Dn4000 y Hδ_A medidos directamente sobre espectros de SDSS (no un catálogo pre-calculado), método de Kauffmann et al. (2003, MNRAS, 341, 33 y 54).",
+    andConnector: "y",
+  },
+  footer: {
+    openSourceText: "Este es un proyecto de código abierto en",
+    licenseNote: "Código bajo licencia MIT.",
   },
 };

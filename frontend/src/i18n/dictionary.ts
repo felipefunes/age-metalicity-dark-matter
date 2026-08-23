@@ -128,5 +128,26 @@ export interface Dictionary {
    * component in a later commit. */
   section: {
     datosTitle: string;
+    fuentesTitle: string;
+  };
+  /** SourcesSection. Author/year/journal citations are hardcoded, literal
+   * ReactNode fragments directly in the component (identical across every
+   * locale -- citations aren't translated) -- only each source's one-line
+   * "what this gives us" description is looked up here. */
+  sources: {
+    sparc: string;
+    hyperleda: string;
+    nedSimbad: string;
+    moustakas: string;
+    pilyugin: string;
+    z0mgs: string;
+    dn4000Hdelta: string;
+    /** Connector between the two citations in the Dn4000/Hδ_A entry
+     * ("...54; {and} Worthey, G., ..."). */
+    andConnector: string;
+  };
+  footer: {
+    openSourceText: string;
+    licenseNote: string;
   };
 }

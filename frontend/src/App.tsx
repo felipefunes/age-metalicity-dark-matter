@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { FilterPanel } from "./components/FilterPanel";
+import { Footer } from "./components/Footer";
 import { GalaxyDetailDrawer } from "./components/GalaxyDetailDrawer";
 import { Hero } from "./components/Hero";
 import { HubbleTypeChart } from "./components/HubbleTypeChart";
 import { NavBar } from "./components/NavBar";
 import { ScatterPanel } from "./components/ScatterPanel";
+import { SourcesSection } from "./components/SourcesSection";
 import type { GalaxyFilters } from "./api";
 import { useCorrelation } from "./hooks/useCorrelation";
 import { useGalaxies } from "./hooks/useGalaxies";
@@ -86,6 +88,9 @@ export default function App() {
           </main>
         </div>
       </section>
+
+      <SourcesSection />
+      <Footer />
 
       <GalaxyDetailDrawer pgcId={selectedPgcId} onClose={() => setSelectedPgcId(null)} />
     </div>
