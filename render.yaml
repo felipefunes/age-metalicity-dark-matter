@@ -1,0 +1,37 @@
+# Render Blueprint (Infrastructure as Code) -- deploy via the Render
+# dashboard: "New" -> "Blueprint" -> point at this repo. Both services run
+# on the free plan; see README.md "Producción (Render)" for the real
+# free-tier tradeoffs (API sleeps after 15 min idle, cold start on wake;
+# no persistent disk, so every deploy re-runs the full pipeline to
+# rebuild the data baked into the API image -- see api/Dockerfile.render).
+services:
+  - type: web
+    name: age-metalicity-dark-matter-api
+    runtime: docker
+    dockerfilePath: ./api/Dockerfile.render
+    dockerContext: .
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHONUNBUFFERED
+        value: "1"
+
+  - type: web
+    name: age-metalicity-dark-matter-frontend
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: ./dist
+    routes:
+      # Proxies /api/* to the API service's public URL so the browser
+      # never makes a cross-origin request (same pattern as the nginx
+      # config used for local docker-compose, frontend/nginx.conf).
+      # NOTE: verify this resolves correctly after the first deploy --
+      # Render's exact wildcard-forwarding behavior for an external
+      # destination wasn't fully confirmed from public docs; if /api/*
+      # doesn't route the full path+query correctly, adjust this rule
+      # from the Render dashboard (Static Site -> Redirects/Rewrites),
+      # no redeploy needed.
+      - type: rewrite
+        source: /api/*
+        destination: https://age-metalicity-dark-matter-api.onrender.com/*
