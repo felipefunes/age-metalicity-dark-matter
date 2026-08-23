@@ -34,7 +34,7 @@ export default function App() {
     state.xAxis,
     state.yAxis,
     filters,
-    state.controlForMass ? "mass" : null,
+    state.controlForMassScatter ? "mass" : null,
   );
 
   return (
@@ -69,8 +69,8 @@ export default function App() {
               xAxis={state.xAxis}
               yAxis={state.yAxis}
               correlation={correlation.result}
-              controlForMass={state.controlForMass}
-              onControlForMassChange={(value) => update({ controlForMass: value })}
+              controlForMass={state.controlForMassScatter}
+              onControlForMassChange={(value) => update({ controlForMassScatter: value })}
               onPointClick={setSelectedPgcId}
               loading={loading}
               error={error}
@@ -79,8 +79,8 @@ export default function App() {
             <HubbleTypeChart
               galaxies={galaxies}
               filters={filters}
-              controlForMass={state.controlForMass}
-              onControlForMassChange={(value) => update({ controlForMass: value })}
+              controlForMass={state.controlForMassHubble}
+              onControlForMassChange={(value) => update({ controlForMassHubble: value })}
               onPointClick={setSelectedPgcId}
               loading={loading}
             />

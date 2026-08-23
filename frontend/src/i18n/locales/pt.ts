@@ -102,11 +102,14 @@ export const pt: Dictionary = {
       "Passe o mouse sobre um ponto para ver detalhes, clique para abrir a ficha completa da galáxia. Arraste para dar zoom.",
     scatterLogSuffix: " (escala log)",
     hoverCrossLabel: "correspondência:",
+    notSignificantPrefix: "Sem correlação significativa",
     hubbleTitle: "f_DM por tipo de Hubble (proxy morfológico de idade)",
     hubbleEmptyState: "Não há galáxias com T e f_DM disponíveis com os filtros atuais.",
     hubbleHint:
       "Cada caixa resume a fração de matéria escura das galáxias daquele tipo morfológico; os pontos são galáxias individuais, clicáveis.",
     hubbleSourceSuffix: "— T discreto/ordinal, agrupado por tipo",
+    hubbleRawStatLabel: "Spearman bruto",
+    hubbleMassStatLabel: "Controlando pela massa",
   },
   nav: {
     brand: "Matéria Escura",

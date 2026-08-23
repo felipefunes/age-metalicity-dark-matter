@@ -10,7 +10,16 @@ export interface AppState {
   requireAge: boolean;
   xAxis: ScatterAxis;
   yAxis: ScatterAxis;
-  controlForMass: boolean;
+  /** Independent per-chart toggles -- ScatterPanel and HubbleTypeChart used
+   * to share a single controlForMass boolean, which meant "default the
+   * Hubble chart's toggle to on" would have also silently changed the
+   * scatter's default. Split so each chart's default can be set on its own
+   * merits: false for the scatter (unchanged), true for the Hubble chart
+   * (its annotation now always shows both raw and mass-controlled results
+   * regardless of this value -- see HubbleTypeChart.tsx -- but the toggle
+   * still starts in the "on" state per that chart's own default). */
+  controlForMassScatter: boolean;
+  controlForMassHubble: boolean;
 }
 
 const DEFAULT_STATE: AppState = {
@@ -24,7 +33,8 @@ const DEFAULT_STATE: AppState = {
   // ScatterAxis for why "metallicity"/"age_gyr" aren't valid choices at all.
   xAxis: "age_proxy_ssfr",
   yAxis: "dm_fraction",
-  controlForMass: false,
+  controlForMassScatter: false,
+  controlForMassHubble: true,
 };
 
 function parseState(search: string): AppState {
@@ -47,7 +57,10 @@ function parseState(search: string): AppState {
     requireAge: params.get("require_age") === "true",
     xAxis: xAxis && SCATTER_AXIS_OPTIONS.includes(xAxis as ScatterAxis) ? (xAxis as ScatterAxis) : DEFAULT_STATE.xAxis,
     yAxis: yAxis && SCATTER_AXIS_OPTIONS.includes(yAxis as ScatterAxis) ? (yAxis as ScatterAxis) : DEFAULT_STATE.yAxis,
-    controlForMass: params.get("control_for_mass") === "true",
+    controlForMassScatter: params.get("control_for_mass_scatter") === "true",
+    // Default is true, so only an explicit "false" in the URL turns it off
+    // -- absence (or "true") both mean "use the default".
+    controlForMassHubble: params.get("control_for_mass_hubble") === "false" ? false : true,
   };
 }
 
@@ -62,7 +75,8 @@ function stateToSearch(state: AppState): string {
   if (state.requireAge) params.set("require_age", "true");
   if (state.xAxis !== DEFAULT_STATE.xAxis) params.set("x", state.xAxis);
   if (state.yAxis !== DEFAULT_STATE.yAxis) params.set("y", state.yAxis);
-  if (state.controlForMass) params.set("control_for_mass", "true");
+  if (state.controlForMassScatter) params.set("control_for_mass_scatter", "true");
+  if (!state.controlForMassHubble) params.set("control_for_mass_hubble", "false");
   return params.toString();
 }
 

@@ -97,10 +97,21 @@ export interface Dictionary {
     /** Label for the match-method word in the scatter's hover tooltip
      * (the value itself is looked up via dict.matchMethod). */
     hoverCrossLabel: string;
+    /** Prefixed to the Spearman annotation when p > 0.05, so a visually
+     * prominent regression line never implies a trend the statistic
+     * itself doesn't support. The line/band are also drawn muted+dashed
+     * in that case instead of in the theme's accent color. */
+    notSignificantPrefix: string;
     hubbleTitle: string;
     hubbleEmptyState: string;
     hubbleHint: string;
     hubbleSourceSuffix: string;
+    /** HubbleTypeChart always shows both the raw and mass-controlled
+     * Spearman results together, regardless of the panel's own toggle --
+     * see App.tsx / useUrlState.ts for why that toggle no longer gates
+     * which one is displayed. */
+    hubbleRawStatLabel: string;
+    hubbleMassStatLabel: string;
   };
   nav: {
     /** Short 1-2 word wordmark next to the logo -- the full descriptive

@@ -4,12 +4,19 @@ import type { Layout, PlotData } from "plotly.js-dist-min";
 import type { GalaxyFilters } from "../api";
 import { useLocale } from "../i18n/LocaleContext";
 import { useCorrelation } from "../hooks/useCorrelation";
-import type { GalaxySummary } from "../types";
+import type { CorrelationResponse, GalaxySummary } from "../types";
 import { HUBBLE_TYPE_LABELS, formatPValue, hubbleTypeLabel } from "../utils/format";
 
 interface HubbleTypeChartProps {
   galaxies: GalaxySummary[];
   filters: GalaxyFilters;
+  /** This is this project's most solid finding (see README's reliability
+   * map), and the point of it is precisely that controlling for mass
+   * flips the conclusion -- so the annotation always shows both the raw
+   * and mass-controlled Spearman results together, regardless of this
+   * toggle's value. It still exists (default true, see useUrlState.ts)
+   * for whoever wants to hide/show the checkbox state itself, but it no
+   * longer gates which correlation gets fetched or displayed. */
   controlForMass: boolean;
   onControlForMassChange: (value: boolean) => void;
   onPointClick: (pgcId: number) => void;
@@ -31,12 +38,8 @@ export function HubbleTypeChart({
 }: HubbleTypeChartProps) {
   const { t } = useLocale();
   const d = t((dict) => dict);
-  const correlation = useCorrelation(
-    "hubble_type",
-    "dm_fraction",
-    filters,
-    controlForMass ? "mass" : null,
-  );
+  const rawCorrelation = useCorrelation("hubble_type", "dm_fraction", filters, null);
+  const massCorrelation = useCorrelation("hubble_type", "dm_fraction", filters, "mass");
 
   const points = useMemo(
     () => galaxies.filter((g) => g.T !== null && g.f_dm !== null),
@@ -57,11 +60,17 @@ export function HubbleTypeChart({
     hovertemplate: "<b>%{customdata[0]}</b> (PGC %{customdata[1]})<br>f_DM: %{y}<extra></extra>",
   };
 
-  const annotationText = correlation.result
-    ? `${controlForMass ? d.chart.spearmanPartialMass : d.chart.spearman}: ` +
-      `ρ = ${correlation.result.coefficient !== null ? correlation.result.coefficient.toFixed(3) : "—"}, ` +
-      `${formatPValue(correlation.result.p_value)}, n = ${correlation.result.n}`
-    : "";
+  function formatStat(result: CorrelationResponse | null): string {
+    if (!result || result.coefficient === null) return "—";
+    const suffix = result.p_value !== null && result.p_value > 0.05 ? " (n.s.)" : "";
+    return `ρ = ${result.coefficient.toFixed(3)}, ${formatPValue(result.p_value)}${suffix}`;
+  }
+
+  const annotationText =
+    rawCorrelation.result && massCorrelation.result
+      ? `${d.chart.hubbleRawStatLabel}: ${formatStat(rawCorrelation.result)} · ` +
+        `${d.chart.hubbleMassStatLabel}: ${formatStat(massCorrelation.result)}`
+      : "";
 
   const layout: Partial<Layout> = {
     autosize: true,

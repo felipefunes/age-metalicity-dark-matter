@@ -101,11 +101,14 @@ export const en: Dictionary = {
     scatterHint: "Hover a point for details, click it to open the galaxy's full record. Drag to zoom.",
     scatterLogSuffix: " (log scale)",
     hoverCrossLabel: "cross-match:",
+    notSignificantPrefix: "No significant correlation",
     hubbleTitle: "f_DM by Hubble type (morphological age proxy)",
     hubbleEmptyState: "No galaxies have both T and f_DM available under the current filters.",
     hubbleHint:
       "Each box summarizes the dark matter fraction of galaxies of that morphological type; the points are individual, clickable galaxies.",
     hubbleSourceSuffix: "— T is discrete/ordinal, grouped by type",
+    hubbleRawStatLabel: "Raw Spearman",
+    hubbleMassStatLabel: "Controlling for mass",
   },
   nav: {
     brand: "Dark Matter",
