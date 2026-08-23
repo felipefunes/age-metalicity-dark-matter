@@ -5,6 +5,7 @@ import { GalaxyDetailDrawer } from "./components/GalaxyDetailDrawer";
 import { Hero } from "./components/Hero";
 import { HubbleTypeChart } from "./components/HubbleTypeChart";
 import { NavBar } from "./components/NavBar";
+import { ReliabilityMap } from "./components/ReliabilityMap";
 import { ScatterPanel } from "./components/ScatterPanel";
 import { SourcesSection } from "./components/SourcesSection";
 import type { GalaxyFilters } from "./api";
@@ -41,6 +42,7 @@ export default function App() {
     <div className="app-shell">
       <NavBar />
       <Hero />
+      <ReliabilityMap />
 
       <section id="datos" className="app-section">
         <div className="app-body">
@@ -79,8 +81,6 @@ export default function App() {
             <HubbleTypeChart
               galaxies={galaxies}
               filters={filters}
-              controlForMass={state.controlForMassHubble}
-              onControlForMassChange={(value) => update({ controlForMassHubble: value })}
               onPointClick={setSelectedPgcId}
               loading={loading}
             />

@@ -120,6 +120,7 @@ export const pt: Dictionary = {
   hero: {
     leadQuestion:
       "As galáxias mais velhas ou evoluídas têm mais matéria escura do que as jovens? Este projeto busca responder essa pergunta com dados públicos reais — e mostra tanto o que encontramos quanto os limites do que esses dados realmente podem nos dizer.",
+    howItWorksSummary: "Como isso funciona?",
     intro1Before: "Esta ferramenta cruza dados públicos de cinemática galáctica (",
     intro1After:
       ") com metalicidade e idade estelar de catálogos externos (HyperLeda, NED), resolvidos a um identificador canônico PGC por galáxia.",
@@ -129,6 +130,41 @@ export const pt: Dictionary = {
     intro2After:
       " — porque uma correlação bruta entre metalicidade e matéria escura pode ser espúria se ambas dependem da massa da galáxia.",
     disclaimer: "Esta é uma ferramenta exploratória, não uma fonte de conclusões validadas por revisão por pares.",
+  },
+  reliability: {
+    heading: "Mapa de confiabilidade",
+    columnVariable: "Variável",
+    columnMeasures: "O que mede",
+    columnCoverage: "Cobertura",
+    columnConfidence: "Quão confiável",
+    rows: [
+      {
+        variable: "Tipo de Hubble (morfologia)",
+        measures: 'proxy grosseiro de "estágio evolutivo"',
+        coverage: "163/163 galáxias",
+        confidence: "Alta — amostra completa",
+      },
+      {
+        variable: "sSFR (z0MGS)",
+        measures: "proxy de formação estelar recente",
+        coverage: "126/163",
+        confidence: "Alta cobertura, resultado: nenhuma correlação detectada",
+      },
+      {
+        variable: "Dn4000 / Hδ_A",
+        measures: "idade estelar medida diretamente do espectro",
+        coverage: "41/163",
+        confidence: "Média — amostra pequena, validado contra catálogos oficiais",
+      },
+      {
+        variable: "Metalicidade (Moustakas/Pilyugin)",
+        measures: "composição química medida",
+        coverage: "22/163",
+        confidence: "Baixa — amostra pequena, resultados preliminares",
+      },
+    ],
+    fourVariablesNote:
+      "Por que quatro variáveis diferentes de idade/composição em vez de uma só? Cada uma vem de uma fonte e um método distintos, com sua própria cobertura — nenhuma cobre toda a amostra. Todas são documentadas por transparência, não para confundir.",
   },
   section: {
     fuentesTitle: "Fontes de dados",

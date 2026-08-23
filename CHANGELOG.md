@@ -5,6 +5,28 @@ general (para eso está el historial de git) — es específicamente el lugar do
 cualquier cambio que pueda afectar la interpretación de un hallazgo ya documentado en
 `docs/findings/`.
 
+## 2026-08-23 — Refactor de comunicación (corrección): hero a título+línea, mapa de confiabilidad en el sitio
+
+**Refactor de comunicación: sin cambios en pipeline, cálculos, ni hallazgos existentes.**
+
+Corrige un problema de usabilidad introducido por la entrada anterior de este mismo día: agregar
+la oración de lenguaje llano al hero sin sacar nada más lo hizo más largo, no más claro.
+
+- El hero visible por default ahora es solo título + la oración de lenguaje llano + un badge
+  compacto con el disclaimer (antes un párrafo aparte en itálica). Los dos párrafos técnicos
+  (qué cruza con qué, por qué controlar por masa) se movieron **tal cual, sin reescribir**, a un
+  `<details>` colapsado por default ("¿Cómo funciona esto?").
+- El "mapa de confiabilidad" de la entrada anterior solo existía en `README.md` — nunca se había
+  agregado al sitio en vivo. Se construyó como sección propia del frontend (en los tres idiomas),
+  siempre visible, entre el hero y la sección de gráficos — nunca dentro del `<details>`
+  colapsable, porque es la pieza que más rápido comunica cuánto confiar en cada número.
+- Se eliminó el checkbox "Control correlation for mass" del gráfico "f_DM by Hubble type": desde
+  la entrada anterior ya no afectaba nada visible (el gráfico siempre muestra el Spearman crudo y
+  el controlado por masa juntos). Un control que no hace nada al interactuar es peor que no tener
+  control. Se sacó también el estado `controlForMassHubble` que ya no cumplía función (código
+  muerto); `controlForMassScatter` (el toggle que sí sigue afectando el scatter genérico) no se
+  tocó.
+
 ## 2026-08-23 — Refactor de comunicación: README, hero, visualización y default de un toggle
 
 **Refactor de comunicación: sin cambios en pipeline, cálculos, ni hallazgos existentes. Objetivo:

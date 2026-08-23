@@ -10,15 +10,6 @@ import { HUBBLE_TYPE_LABELS, formatPValue, hubbleTypeLabel } from "../utils/form
 interface HubbleTypeChartProps {
   galaxies: GalaxySummary[];
   filters: GalaxyFilters;
-  /** This is this project's most solid finding (see README's reliability
-   * map), and the point of it is precisely that controlling for mass
-   * flips the conclusion -- so the annotation always shows both the raw
-   * and mass-controlled Spearman results together, regardless of this
-   * toggle's value. It still exists (default true, see useUrlState.ts)
-   * for whoever wants to hide/show the checkbox state itself, but it no
-   * longer gates which correlation gets fetched or displayed. */
-  controlForMass: boolean;
-  onControlForMassChange: (value: boolean) => void;
   onPointClick: (pgcId: number) => void;
   loading: boolean;
 }
@@ -28,14 +19,7 @@ const TYPE_ORDER = Object.keys(HUBBLE_TYPE_LABELS)
   .sort((a, b) => a - b)
   .map((t) => HUBBLE_TYPE_LABELS[t]);
 
-export function HubbleTypeChart({
-  galaxies,
-  filters,
-  controlForMass,
-  onControlForMassChange,
-  onPointClick,
-  loading,
-}: HubbleTypeChartProps) {
+export function HubbleTypeChart({ galaxies, filters, onPointClick, loading }: HubbleTypeChartProps) {
   const { t } = useLocale();
   const d = t((dict) => dict);
   const rawCorrelation = useCorrelation("hubble_type", "dm_fraction", filters, null);
@@ -115,14 +99,6 @@ export function HubbleTypeChart({
     <div className="panel">
       <div className="panel-title-row">
         <h2>{d.chart.hubbleTitle}</h2>
-        <label className="control-toggle">
-          <input
-            type="checkbox"
-            checked={controlForMass}
-            onChange={(e) => onControlForMassChange(e.target.checked)}
-          />
-          {d.chart.controlForMass}
-        </label>
       </div>
       <p className="panel-hint">{d.chart.hubbleHint}</p>
       {loading && <div className="status-text">{d.common.loading}</div>}
