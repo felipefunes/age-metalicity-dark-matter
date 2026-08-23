@@ -115,6 +115,8 @@ export const pt: Dictionary = {
     languageLabel: "Idioma",
   },
   hero: {
+    leadQuestion:
+      "As galáxias mais velhas ou evoluídas têm mais matéria escura do que as jovens? Este projeto busca responder essa pergunta com dados públicos reais — e mostra tanto o que encontramos quanto os limites do que esses dados realmente podem nos dizer.",
     intro1Before: "Esta ferramenta cruza dados públicos de cinemática galáctica (",
     intro1After:
       ") com metalicidade e idade estelar de catálogos externos (HyperLeda, NED), resolvidos a um identificador canônico PGC por galáxia.",

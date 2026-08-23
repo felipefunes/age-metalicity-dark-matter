@@ -114,6 +114,8 @@ export const en: Dictionary = {
     languageLabel: "Language",
   },
   hero: {
+    leadQuestion:
+      "Do older or more evolved galaxies have more dark matter than younger ones? This project sets out to answer that question with real public data — and shows both what we found and the limits of what this data can actually tell us.",
     intro1Before: "This tool cross-matches public galaxy kinematics data (",
     intro1After:
       ") with metallicity and stellar age from external catalogs (HyperLeda, NED), resolved to a canonical PGC identifier per galaxy.",

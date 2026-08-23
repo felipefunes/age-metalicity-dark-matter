@@ -8,6 +8,7 @@ export function Hero() {
     <header className="hero">
       <div className="hero__inner">
         <h1 className="hero__title">{d.common.siteTitle}</h1>
+        <p className="hero__lead">{d.hero.leadQuestion}</p>
         <p className="hero__intro">
           {d.hero.intro1Before}
           <a href="http://astroweb.case.edu/SPARC/" target="_blank" rel="noreferrer">

@@ -116,6 +116,9 @@ export interface Dictionary {
    * dictionary values are plain strings, not JSX -- the wrapper elements
    * stay fixed in Hero.tsx, only the surrounding text is translated. */
   hero: {
+    /** Plain-language hook shown before the two technical intro paragraphs
+     * -- answers "what is this asking" before "how does it ask it". */
+    leadQuestion: string;
     intro1Before: string;
     intro1After: string;
     intro2Before: string;

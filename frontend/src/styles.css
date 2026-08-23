@@ -246,6 +246,14 @@ a {
   text-shadow: 0 2px 28px rgba(0, 0, 0, 0.7);
 }
 
+.hero__lead {
+  color: var(--text-primary);
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.55;
+  margin: 0 0 22px;
+}
+
 .hero__intro {
   color: var(--text-secondary);
   font-size: 15px;
