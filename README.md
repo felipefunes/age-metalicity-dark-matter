@@ -31,6 +31,13 @@ coincidencia de texto de nombre.
 - **Proxy de edad (sSFR, z0MGS): 126/163 con dato** — buena cobertura, pero es un proxy de
   actividad de formación estelar reciente (`age_proxy_ssfr`), no una edad de síntesis de
   poblaciones — nunca se mezcla con `age_gyr`.
+- **Dn4000 y Hδ_A (medidos directamente de espectros SDSS): 41/163 con dato**, validados contra
+  el pipeline oficial SDSS/MPA-JHU (ρ=0.997 y 0.993 respectivamente). Se intentó primero un
+  catálogo de edades pre-calculado (Gallazzi+2005) pero dio solo n=13 por estar desactualizado
+  respecto a los espectros más recientes de la muestra — ver
+  `docs/findings/2026-08-23_stellar_age_gallazzi_attempt.md` y
+  `docs/findings/2026-08-23_dn4000_hdelta_a.md` (esta última incluye la advertencia obligatoria
+  sobre degeneración edad-metalicidad antes de cruzar estas columnas con cualquier metalicidad).
 - **f_DM** (fracción de materia oscura en el radio más externo): rango 0–0.94, media ≈0.72,
   consistente con la literatura de SPARC.
 
@@ -48,6 +55,8 @@ la versión anterior esté mal: puede ser que la confirme en vez de corregirla.
 | 2026-08-22 | [`hubble_mass_dm_v1`](docs/findings/2026-08-22_hubble_mass_dm_v1.md) — masa como confounder casi total del tipo de Hubble; T–f_DM se invierte al controlar por masa | **Vigente** — conclusiones sin cambios |
 | 2026-08-22 | [`hubble_mass_dm_v2_log_control_check`](docs/findings/2026-08-22_hubble_mass_dm_v2_log_control_check.md) — verificación: ¿hace falta controlar por log-masa en vez de masa cruda? (no, ver documento) | **Vigente** — confirma v1, no lo reemplaza |
 | 2026-08-22 | [`metallicity_age_proxy_v1`](docs/findings/2026-08-22_metallicity_age_proxy_v1.md) — primera integración de metalicidad real (Moustakas+2010, Pilyugin+2014) y proxy de edad por sSFR (z0MGS); correlaciones con f_DM | **Vigente** — preliminar/indicativo por muestra chica en metalicidad (n=22), no concluyente |
+| 2026-08-23 | [`stellar_age_gallazzi_attempt`](docs/findings/2026-08-23_stellar_age_gallazzi_attempt.md) — intento de edad estelar vía Gallazzi+2005 (SDSS DR4); n=13, **no integrado** | Vigente — registro de por qué no se usó esta vía |
+| 2026-08-23 | [`dn4000_hdelta_a`](docs/findings/2026-08-23_dn4000_hdelta_a.md) — Dn4000 y Hδ_A medidos directamente de espectros SDSS (n=41), validados contra el pipeline oficial MPA-JHU; incluye la sección de referencia sobre la degeneración edad-metalicidad | **Vigente** — preliminar (n=41), ninguna correlación con f_DM concluyente |
 
 ## Stack
 
@@ -172,6 +181,19 @@ cd frontend && npx tsc -b && npm run build   # type-check + build de producción
 - **Leroy, A. K., et al. 2019**, "A z=0 Multiwavelength Galaxy Synthesis. I. A WISE and GALEX
   Atlas of Local Galaxies", *ApJS*, 244, 24 (proyecto z0MGS). Proxy de edad vía sSFR
   (`age_proxy_ssfr`), vía VizieR `J/ApJS/244/24`.
+- **Balogh, M. L., Morris, S. L., Yee, H. K. C., Carlberg, R. G., & Ellingson, E. 1999**, ApJ,
+  527, 54. Definición estrecha de Dn4000 (`age_proxy_dn4000`), medido directamente sobre
+  espectros de SDSS.
+- **Worthey, G., & Ottaviani, D. L. 1997**, "Hγ and Hδ Absorption Features in Stars and Stellar
+  Populations", *ApJS*, 111, 377. Índice de Lick Hδ_A (`age_proxy_hdelta_a`) y la resolución
+  instrumental del sistema Lick/IDS usada para degradar los espectros de SDSS antes de medirlo.
+- **Kauffmann, G., et al. 2003**, MNRAS, 341, 33 y 54. Método del diagrama Dn4000–Hδ_A para
+  separar poblaciones viejas/pasivas de brotes de formación estelar recientes.
+- **Gallazzi, A., Charlot, S., Brinchmann, J., White, S. D. M., & Tremonti, C. A. 2005**, MNRAS,
+  362, 41. Catálogo de edades/metalicidades estelares evaluado y **no integrado** (n=13,
+  desactualizado respecto a la muestra) — ver `docs/findings/2026-08-23_stellar_age_gallazzi_attempt.md`.
+- **Worthey, G. 1994**, ApJS, 95, 107. Referencia de la degeneración clásica edad-metalicidad en
+  índices de absorción — ver la sección dedicada en `docs/findings/2026-08-23_dn4000_hdelta_a.md`.
 
 ## Limitaciones conocidas
 
@@ -182,4 +204,8 @@ cd frontend && npx tsc -b && npm run build   # type-check + build de producción
   documentado explícitamente con esa limitación, no como hallazgo concluyente.
 - `age_proxy_ssfr` (z0MGS) es un proxy de formación estelar reciente, no una edad de síntesis de
   poblaciones estelares — no confundir con una edad real en Gyr.
+- `age_proxy_dn4000`/`age_proxy_hdelta_a` (n=41) están sujetos a la degeneración clásica
+  edad-metalicidad (Worthey 1994) — el diagrama Dn4000–Hδ_A separa población vieja de un brote
+  reciente, pero no desacopla edad de metalicidad. Ver la sección dedicada en
+  `docs/findings/2026-08-23_dn4000_hdelta_a.md` antes de cruzar estas columnas con metalicidad.
 - 12/175 galaxias SPARC no tienen cross-id PGC en Simbad ni NED (documentadas, excluidas).

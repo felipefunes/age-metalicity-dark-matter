@@ -5,6 +5,40 @@ general (para eso está el historial de git) — es específicamente el lugar do
 cualquier cambio que pueda afectar la interpretación de un hallazgo ya documentado en
 `docs/findings/`.
 
+## 2026-08-23 — Edad estelar real vía Dn4000/Hδ_A medidos directamente de espectros SDSS
+
+**Qué se investigó primero (no integrado):** Gallazzi et al. 2005 (MNRAS, 362, 41), el catálogo
+de edades estelares vía síntesis de poblaciones más establecido para SDSS. No está en VizieR;
+identificado por plate/MJD/fiber, no por nombre/coordenadas. 43/163 galaxias SPARC sí tienen un
+espectro SDSS a 5″ (verificado, 0 errores), pero solo 18/43 aparecen en ese catálogo específico
+(DR4, ~2006) — la mayoría de los faltantes son espectros post-2012 (SDSS-III/BOSS), demasiado
+recientes para ese catálogo. De esos 18, 5 fallan su propio corte de calidad. **n final = 13**,
+por debajo del umbral de 30 — no integrado. Ver
+[`docs/findings/2026-08-23_stellar_age_gallazzi_attempt.md`](docs/findings/2026-08-23_stellar_age_gallazzi_attempt.md).
+
+**Qué se integró en su lugar:** medición directa de Dn4000 (Balogh et al. 1999, en Fν) y Hδ_A
+(Worthey & Ottaviani 1997, Lick, con degradación de resolución dependiente de λ vía la
+resolución nativa real de cada espectro) sobre los 43 espectros ya identificados —
+`pipeline/external/sdss_indices.py`. Corrección hecha sobre la marcha: la resolución Lick cerca
+de Hδ_A (~4100 Å) es ~10 Å FWHM, no los "~8-9 Å" (válido solo cerca del centro del sistema,
+~5000 Å) que se asumió inicialmente en el diseño. Validado contra el pipeline oficial
+SDSS/MPA-JHU (`galSpecIndx`, 32 galaxias en común): Spearman ρ=0.997 (Dn4000), ρ=0.993 (Hδ_A).
+
+**Cobertura real:** n=41/163 con ambos índices — por encima del umbral de 30.
+
+**Correlaciones con f_DM:** ninguna concluyente (Dn4000 crudo/parcial no significativo; Hδ_A
+crudo nominalmente significativo p=0.017 pero no tras controlar por masa, p=0.160; sin corrección
+por comparaciones múltiples).
+
+**Findings afectados:**
+- [`docs/findings/2026-08-23_stellar_age_gallazzi_attempt.md`](docs/findings/2026-08-23_stellar_age_gallazzi_attempt.md)
+  — nuevo, intento no integrado.
+- [`docs/findings/2026-08-23_dn4000_hdelta_a.md`](docs/findings/2026-08-23_dn4000_hdelta_a.md) —
+  nuevo, incluye sección obligatoria de limitación estructural (degeneración edad-metalicidad,
+  Worthey 1994) para referenciar desde cualquier análisis futuro que cruce estas columnas con
+  metalicidad.
+- No afecta a los findings anteriores (variables y muestras distintas).
+
 ## 2026-08-22 — Metalicidad real (Moustakas+2010, Pilyugin+2014) y proxy de edad (sSFR, z0MGS)
 
 **Qué se agregó:** HyperLeda/NED no exponían metalicidad ni edad estelar para ninguna galaxia
