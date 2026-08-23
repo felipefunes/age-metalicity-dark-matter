@@ -6,6 +6,8 @@ interface DualRangeSliderProps {
   step: number;
   onChange: (min: number, max: number) => void;
   formatValue: (value: number) => string;
+  ariaLabelMin: string;
+  ariaLabelMax: string;
 }
 
 export function DualRangeSlider({
@@ -16,6 +18,8 @@ export function DualRangeSlider({
   step,
   onChange,
   formatValue,
+  ariaLabelMin,
+  ariaLabelMax,
 }: DualRangeSliderProps) {
   function handleMinChange(next: number) {
     onChange(Math.min(next, valueMax), valueMax);
@@ -34,7 +38,7 @@ export function DualRangeSlider({
       <div className="dual-range">
         <input
           type="range"
-          aria-label="Masa mínima"
+          aria-label={ariaLabelMin}
           min={domainMin}
           max={domainMax}
           step={step}
@@ -43,7 +47,7 @@ export function DualRangeSlider({
         />
         <input
           type="range"
-          aria-label="Masa máxima"
+          aria-label={ariaLabelMax}
           min={domainMin}
           max={domainMax}
           step={step}

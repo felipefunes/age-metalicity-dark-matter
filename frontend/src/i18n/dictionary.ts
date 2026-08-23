@@ -57,4 +57,26 @@ export interface Dictionary {
     hiiRegionsSuffix: (n: string) => string;
     pxSuffix: (n: string) => string;
   };
+  /** FilterPanel + DualRangeSlider. Each *Hint is an always-visible small
+   * line under its group's heading (not a hover tooltip -- no tooltip
+   * infra exists, and hover-only fails touch users anyway). */
+  filter: {
+    axesTitle: string;
+    xAxisLabel: string;
+    yAxisLabel: string;
+    axesHint: string;
+    massTitlePrefix: string;
+    massHint: string;
+    massAriaLabelMin: string;
+    massAriaLabelMax: string;
+    qualityTitle: string;
+    excludeLowQuality: string;
+    qualityHint: string;
+    matchMethodTitle: string;
+    matchMethodHint: string;
+    ageTitle: string;
+    requireAge: string;
+    ageHint: string;
+    resetButton: string;
+  };
 }
