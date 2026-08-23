@@ -1,0 +1,36 @@
+services:
+  pipeline:
+    build:
+      context: .
+      dockerfile: pipeline/Dockerfile
+    volumes:
+      - ./data:/app/data
+    environment:
+      - UPSILON_DISK=${UPSILON_DISK:-0.5}
+      - UPSILON_BULGE=${UPSILON_BULGE:-0.7}
+      - COORD_TOLERANCE_ARCSEC=${COORD_TOLERANCE_ARCSEC:-5.0}
+    command: ["-v"]
+
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    depends_on:
+      pipeline:
+        condition: service_completed_successfully
+    volumes:
+      - ./data:/app/data
+    environment:
+      - API_DB_PATH=/app/data/processed/galaxies.sqlite
+      - API_CORS_ORIGINS=http://localhost:8080
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    depends_on:
+      - api
+    ports:
+      - "8080:80"

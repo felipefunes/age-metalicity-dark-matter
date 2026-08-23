@@ -1,0 +1,33 @@
+Title: SPARC: Mass Models for 175 Disk Galaxies with Spitzer Photometry
+       and Accurate Rotation Curves
+Authors: Lelli F., McGaugh S.S., Schombert J.M.
+Table: Mass Models
+================================================================================
+Byte-by-byte Description of file: datafile2.txt
+--------------------------------------------------------------------------------
+   Bytes Format Units        Label   Explanations
+--------------------------------------------------------------------------------
+   1- 11 A11    ---          ID      Galaxy identifier
+  13- 18 F6.2   Mpc          D       Assumed distance
+  20- 25 F6.2   kpc          R       Galactocentric radius
+  27- 32 F6.2   km/s         Vobs    Observed circular velocity
+  34- 38 F5.2   km/s       e_Vobs    Uncertainty in Vobs (1)
+  40- 45 F6.2   km/s         Vgas    Gas velocity contribution (2)
+  47- 52 F6.2   km/s         Vdisk   Disk velocity contribution (3)
+  54- 59 F6.2   km/s         Vbul    Bulge velocity contribution (3)
+  61- 67 F7.2   solLum/pc2   SBdisk  Disk surface brightness
+  69- 76 F8.2   solLum/pc2   SBbul   Bulge surface brightness
+--------------------------------------------------------------------------------
+Note (1): Random error due to non-circular motions and/or kinematic asymmetries.
+It does not include systematic uncertainties due to inclination corrections.
+Note (2): Vgas includes a factor 1.33 to account for cosmological helium.
+Note (3): Vdisk and Vbul are given for M/L = 1 solMass/solLum at [3.6].
+--------------------------------------------------------------------------------
+CamB          3.36   0.16   1.99  1.50   1.86   3.75   0.00   30.32     0.00
+CamB          3.36   0.41   4.84  1.50   4.24   9.47   0.00   23.77     0.00
+CamB          3.36   1.79  20.10  1.50   6.91  14.91   0.00    0.88     0.00
+NGC2403       3.16   0.16  24.50  2.83   0.00  23.21   0.00 1105.79     0.00
+NGC2403       3.16   0.26  35.30  2.46   0.00  35.33   0.00 1006.36     0.00
+NGC2403       3.16  20.87 134.00  3.12  39.87  45.97   0.00    0.00     0.00
+NGC3198      13.8    0.98  55.90  4.30   0.00  47.02   0.00  429.20     0.00
+NGC3198      13.8   44.08 149.00  3.00  47.84  61.63   0.00    0.00     0.00
