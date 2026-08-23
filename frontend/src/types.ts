@@ -24,6 +24,11 @@ export interface GalaxySummary {
   metallicity_pilyugin2014: number | null;
   /** sSFR age PROXY (z0MGS) -- not a stellar-population-synthesis age. */
   age_proxy_ssfr: number | null;
+  /** Measured directly from SDSS spectra (Balogh+1999 / Worthey & Ottaviani
+   * 1997) -- see docs/findings/2026-08-23_dn4000_hdelta_a.md before
+   * correlating either against metallicity (age-metallicity degeneracy). */
+  age_proxy_dn4000: number | null;
+  age_proxy_hdelta_a: number | null;
 }
 
 export interface GalaxyDetail extends GalaxySummary {
@@ -43,6 +48,10 @@ export interface GalaxyDetail extends GalaxySummary {
   e_age_proxy_ssfr: number | null;
   age_proxy_source: string | null;
   age_proxy_method: string | null;
+  e_age_proxy_dn4000: number | null;
+  n_pixels_dn4000: number | null;
+  e_age_proxy_hdelta_a: number | null;
+  n_pixels_hdelta_a: number | null;
 }
 
 export interface GalaxyListResponse {
@@ -70,6 +79,8 @@ export type ApiVariable =
   | "hubble_type"
   | "age_gyr"
   | "age_proxy_ssfr"
+  | "age_proxy_dn4000"
+  | "age_proxy_hdelta_a"
   | "dm_fraction"
   | "mass"
   | "mhi";
@@ -83,6 +94,8 @@ export type ScatterAxis =
   | "metallicity_pilyugin2014"
   | "age_gyr"
   | "age_proxy_ssfr"
+  | "age_proxy_dn4000"
+  | "age_proxy_hdelta_a"
   | "dm_fraction"
   | "mass"
   | "mhi";

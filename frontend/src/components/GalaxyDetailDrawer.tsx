@@ -111,6 +111,22 @@ export function GalaxyDetailDrawer({ pgcId, onClose }: GalaxyDetailDrawerProps) 
                       : "sin dato"
                   }
                 />
+                <Row
+                  label="Dn4000 (espectro SDSS)"
+                  value={
+                    galaxy.age_proxy_dn4000 !== null
+                      ? `${formatNumber(galaxy.age_proxy_dn4000)} ± ${formatNumber(galaxy.e_age_proxy_dn4000)} (${galaxy.n_pixels_dn4000 ?? "?"} px)`
+                      : "sin dato"
+                  }
+                />
+                <Row
+                  label="Hδ_A (espectro SDSS, resolución Lick)"
+                  value={
+                    galaxy.age_proxy_hdelta_a !== null
+                      ? `${formatNumber(galaxy.age_proxy_hdelta_a)} ± ${formatNumber(galaxy.e_age_proxy_hdelta_a)} Å (${galaxy.n_pixels_hdelta_a ?? "?"} px)`
+                      : "sin dato"
+                  }
+                />
               </tbody>
             </table>
           </>

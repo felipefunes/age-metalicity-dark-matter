@@ -93,6 +93,13 @@ export function Header() {
                 Synthesis. I. A WISE and GALEX Atlas of Local Galaxies", <em>ApJS</em>, 244, 24
                 (z0MGS) — proxy de edad vía sSFR, no una edad estelar en sentido estricto.
               </li>
+              <li>
+                <strong>Balogh, M. L., Morris, S. L., Yee, H. K. C., Carlberg, R. G., &amp;
+                Ellingson, E. 1999</strong>, <em>ApJ</em>, 527, 54; y{" "}
+                <strong>Worthey, G., &amp; Ottaviani, D. L. 1997</strong>, <em>ApJS</em>, 111, 377
+                — Dn4000 y Hδ_A medidos directamente sobre espectros de SDSS (no un catálogo
+                pre-calculado), método de Kauffmann et al. (2003, MNRAS, 341, 33 y 54).
+              </li>
             </ul>
           </div>
         </div>
