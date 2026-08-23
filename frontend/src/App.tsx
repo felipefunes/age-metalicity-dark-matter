@@ -47,7 +47,12 @@ export default function App() {
         {/* Always visible on desktop; on narrow screens CSS hides it unless
             sidebar--open is set (toggled by the floating "Filtros" button). */}
         <aside className={`sidebar ${sidebarOpen ? "sidebar--open" : ""}`}>
-          <FilterPanel state={state} update={update} onClose={() => setSidebarOpen(false)} />
+          <FilterPanel
+            state={state}
+            update={update}
+            onClose={() => setSidebarOpen(false)}
+            galaxies={galaxies}
+          />
         </aside>
 
         <main className="main-content">

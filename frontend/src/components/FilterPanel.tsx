@@ -1,13 +1,19 @@
+import { useMemo } from "react";
 import { DualRangeSlider } from "./DualRangeSlider";
 import { useMassDomain } from "../hooks/useMassDomain";
 import type { AppState } from "../hooks/useUrlState";
-import type { MatchMethod, ScatterAxis } from "../types";
+import type { GalaxySummary, MatchMethod, ScatterAxis } from "../types";
 import { AXIS_LABELS, SCATTER_AXIS_OPTIONS } from "../utils/format";
+import { axisValue } from "../utils/galaxyFields";
 
 interface FilterPanelProps {
   state: AppState;
   update: (partial: Partial<AppState>) => void;
   onClose: () => void;
+  /** Currently-loaded (filtered) galaxies -- used to show a live "(n=X)"
+   * coverage count per axis option, so picking an axis combination that
+   * will render an empty chart is an informed choice, not a surprise. */
+  galaxies: GalaxySummary[];
 }
 
 const MATCH_METHOD_OPTIONS: { value: MatchMethod; label: string }[] = [
@@ -19,8 +25,16 @@ function formatMass(value: number): string {
   return value.toFixed(2);
 }
 
-export function FilterPanel({ state, update, onClose }: FilterPanelProps) {
+export function FilterPanel({ state, update, onClose, galaxies }: FilterPanelProps) {
   const massDomain = useMassDomain();
+
+  const axisCounts = useMemo(() => {
+    const counts = {} as Record<ScatterAxis, number>;
+    for (const axis of SCATTER_AXIS_OPTIONS) {
+      counts[axis] = galaxies.reduce((n, g) => (axisValue(g, axis) !== null ? n + 1 : n), 0);
+    }
+    return counts;
+  }, [galaxies]);
 
   function toggleMatchMethod(method: MatchMethod) {
     const current = new Set(state.matchMethods);
@@ -59,7 +73,7 @@ export function FilterPanel({ state, update, onClose }: FilterPanelProps) {
             <select value={state.xAxis} onChange={(e) => update({ xAxis: e.target.value as ScatterAxis })}>
               {SCATTER_AXIS_OPTIONS.map((axis) => (
                 <option key={axis} value={axis}>
-                  {AXIS_LABELS[axis]}
+                  {AXIS_LABELS[axis]} (n={axisCounts[axis]})
                 </option>
               ))}
             </select>
@@ -71,7 +85,7 @@ export function FilterPanel({ state, update, onClose }: FilterPanelProps) {
             <select value={state.yAxis} onChange={(e) => update({ yAxis: e.target.value as ScatterAxis })}>
               {SCATTER_AXIS_OPTIONS.map((axis) => (
                 <option key={axis} value={axis}>
-                  {AXIS_LABELS[axis]}
+                  {AXIS_LABELS[axis]} (n={axisCounts[axis]})
                 </option>
               ))}
             </select>
