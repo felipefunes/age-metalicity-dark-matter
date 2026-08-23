@@ -19,7 +19,10 @@ const DEFAULT_STATE: AppState = {
   excludeLowQuality: false,
   matchMethods: ["name_match", "coordinate_match"],
   requireAge: false,
-  xAxis: "metallicity",
+  // Best real coverage among non-SPARC columns (n=126 of 163 resolved
+  // galaxies) -- picked so the default view is never an empty chart. See
+  // ScatterAxis for why "metallicity"/"age_gyr" aren't valid choices at all.
+  xAxis: "age_proxy_ssfr",
   yAxis: "dm_fraction",
   controlForMass: false,
 };

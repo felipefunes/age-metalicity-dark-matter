@@ -64,22 +64,6 @@ export function GalaxyDetailDrawer({ pgcId, onClose }: GalaxyDetailDrawerProps) 
                 />
                 <Row label="Quality flag (SPARC)" value={String(galaxy.quality_flag ?? "—")} />
                 <Row
-                  label="Metalicidad"
-                  value={
-                    galaxy.metallicity !== null
-                      ? `${formatNumber(galaxy.metallicity)} (${galaxy.metallicity_source} / ${galaxy.metallicity_method})`
-                      : "sin dato"
-                  }
-                />
-                <Row
-                  label="Edad estelar"
-                  value={
-                    galaxy.age_gyr !== null
-                      ? `${formatNumber(galaxy.age_gyr)} Gyr (${galaxy.age_source} / ${galaxy.age_method})`
-                      : "sin dato"
-                  }
-                />
-                <Row
                   label="Metalicidad KK04 (Moustakas+2010)"
                   value={
                     galaxy.metallicity_kk04 !== null
