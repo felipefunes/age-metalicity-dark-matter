@@ -23,8 +23,11 @@ from pipeline.config import (
     UPSILON_DISK,
 )
 from pipeline.dm_fraction import compute_outer_dm_fraction
+from pipeline.external.age_proxy_z0mgs import compute_ssfr
 from pipeline.external.identity import resolve_all
 from pipeline.external.metallicity_age import lookup_all
+from pipeline.external.moustakas import compute_moustakas_metallicity
+from pipeline.external.pilyugin import compute_pilyugin_metallicity
 from pipeline.fetch.sparc_fetch import fetch_all
 from pipeline.parsers.sparc import read_mass_models, read_sparc_main
 
@@ -105,6 +108,20 @@ def write_coverage_report(
     n_metallicity = int(metallicity_age["metallicity"].notna().sum())
     n_age = int(metallicity_age["age_gyr"].notna().sum())
 
+    n_kk04 = int(metallicity_age["metallicity_kk04"].notna().sum())
+    n_pt05 = int(metallicity_age["metallicity_pt05"].notna().sum())
+    n_pilyugin2014 = int(metallicity_age["metallicity_pilyugin2014"].notna().sum())
+    n_any_metallicity_source = int(
+        metallicity_age[["metallicity_kk04", "metallicity_pt05", "metallicity_pilyugin2014"]].notna().any(axis=1).sum()
+    )
+    n_moustakas_and_pilyugin_both = int(
+        (
+            (metallicity_age["metallicity_kk04"].notna() | metallicity_age["metallicity_pt05"].notna())
+            & metallicity_age["metallicity_pilyugin2014"].notna()
+        ).sum()
+    )
+    n_age_proxy_ssfr = int(metallicity_age["age_proxy_ssfr"].notna().sum())
+
     report = {
         "n_total_sparc_galaxies": n_total,
         "n_resolved_to_pgc": n_resolved,
@@ -113,6 +130,12 @@ def write_coverage_report(
         "unresolved_names": unresolved,
         "n_with_metallicity": n_metallicity,
         "n_with_age_gyr": n_age,
+        "n_with_metallicity_kk04_moustakas2010": n_kk04,
+        "n_with_metallicity_pt05_moustakas2010": n_pt05,
+        "n_with_metallicity_pilyugin2014": n_pilyugin2014,
+        "n_with_any_external_metallicity_source": n_any_metallicity_source,
+        "n_with_moustakas_and_pilyugin_both": n_moustakas_and_pilyugin_both,
+        "n_with_age_proxy_ssfr_z0mgs": n_age_proxy_ssfr,
         "upsilon_disk": UPSILON_DISK,
         "upsilon_bulge": UPSILON_BULGE,
     }
@@ -151,9 +174,26 @@ def run_pipeline(
     identity = resolve_all(sparc_main["Galaxy"].tolist(), force_refresh=force_refresh_identity)
 
     resolved_pgc_ids = identity.loc[identity["match_method"] != "unresolved", "pgc_id"].astype(int).tolist()
+    resolved_pgc_id_set = set(resolved_pgc_ids)
+
     logger.info("looking up metallicity/age for %d resolved galaxies", len(resolved_pgc_ids))
     metallicity_results = lookup_all(resolved_pgc_ids, force_refresh=force_refresh_metallicity)
     metallicity_age = pd.DataFrame([r.as_dict() for r in metallicity_results]).drop(columns=["note"])
+
+    logger.info("cross-matching Moustakas+2010, Pilyugin+2014, and z0MGS")
+    moustakas_df = compute_moustakas_metallicity(
+        resolved_pgc_id_set, force_refresh_fetch=force_refresh_fetch, force_refresh_identity=force_refresh_identity
+    )
+    pilyugin_df = compute_pilyugin_metallicity(
+        resolved_pgc_id_set, force_refresh_fetch=force_refresh_fetch, force_refresh_identity=force_refresh_identity
+    )
+    ssfr_df = compute_ssfr(resolved_pgc_id_set, force_refresh_fetch=force_refresh_fetch)
+
+    metallicity_age = (
+        metallicity_age.merge(moustakas_df, on="pgc_id", how="left")
+        .merge(pilyugin_df, on="pgc_id", how="left")
+        .merge(ssfr_df, on="pgc_id", how="left")
+    )
 
     logger.info("writing SQLite database at %s", db_path)
     write_database(identity, kinematics, metallicity_age, db_path)
