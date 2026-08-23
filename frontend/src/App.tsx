@@ -43,7 +43,6 @@ export default function App() {
       <Hero />
 
       <section id="datos" className="app-section">
-        <h2 className="section-title">{d.section.datosTitle}</h2>
         <div className="app-body">
           <button
             className="mobile-drawer-toggle reset-filters"

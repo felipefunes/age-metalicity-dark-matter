@@ -123,11 +123,10 @@ export interface Dictionary {
     intro2After: string;
     disclaimer: string;
   };
-  /** Section headings outside the hero (magazine-style but smaller). Only
-   * "datos" is here for now -- "fuentes" is added alongside its section
-   * component in a later commit. */
+  /** Section headings outside the hero (magazine-style but smaller). #datos
+   * has no heading of its own -- a background-color band is enough to read
+   * as a distinct section, so only "fuentes" needs a translated title. */
   section: {
-    datosTitle: string;
     fuentesTitle: string;
   };
   /** SourcesSection. Author/year/journal citations are hardcoded, literal

@@ -72,14 +72,14 @@ export const es: Dictionary = {
     axesTitle: "Ejes del scatter",
     xAxisLabel: "Eje X",
     yAxisLabel: "Eje Y",
-    axesHint: "Elegí qué variables comparar en el gráfico de dispersión de arriba.",
+    axesHint: "Elige qué variables comparar en el gráfico de dispersión de arriba.",
     massTitlePrefix: "Masa",
-    massHint: "Restringí el rango de masa estelar (L[3.6]) para comparar galaxias de tamaño similar.",
+    massHint: "Restringe el rango de masa estelar (L[3.6]) para comparar galaxias de tamaño similar.",
     massAriaLabelMin: "Masa mínima",
     massAriaLabelMax: "Masa máxima",
     qualityTitle: "Calidad",
     excludeLowQuality: "Excluir quality_flag bajo (Q=3)",
-    qualityHint: "SPARC marca con Q=3 las curvas de rotación menos confiables; podés excluirlas.",
+    qualityHint: "SPARC marca con Q=3 las curvas de rotación menos confiables; puedes excluirlas.",
     matchMethodTitle: "Método de cruce de identidad",
     matchMethodHint:
       "Cómo se identificó cada galaxia en catálogos externos: por nombre o, si eso falla, por coordenadas.",
@@ -99,7 +99,7 @@ export const es: Dictionary = {
     scatterEmptyState: (xLabel, yLabel) =>
       `No hay galaxias con datos disponibles para ${xLabel} y ${yLabel} con los filtros actuales.`,
     scatterHint:
-      "Pasá el mouse sobre un punto para ver detalles, hacé clic para abrir la ficha completa de la galaxia. Arrastrá para hacer zoom.",
+      "Pasa el mouse sobre un punto para ver detalles, haz clic para abrir la ficha completa de la galaxia. Arrastra para hacer zoom.",
     scatterLogSuffix: " (escala log)",
     hoverCrossLabel: "cruce:",
     hubbleTitle: "f_DM por tipo de Hubble (proxy morfológico de edad)",
@@ -126,7 +126,6 @@ export const es: Dictionary = {
     disclaimer: "Es una herramienta exploratoria, no una fuente con conclusiones validadas por revisión de pares.",
   },
   section: {
-    datosTitle: "Explorá los datos",
     fuentesTitle: "Fuentes de datos",
   },
   sources: {

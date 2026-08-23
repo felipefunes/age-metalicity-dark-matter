@@ -126,7 +126,6 @@ export const pt: Dictionary = {
     disclaimer: "Esta é uma ferramenta exploratória, não uma fonte de conclusões validadas por revisão por pares.",
   },
   section: {
-    datosTitle: "Explore os dados",
     fuentesTitle: "Fontes de dados",
   },
   sources: {
