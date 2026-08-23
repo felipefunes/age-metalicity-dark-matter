@@ -49,4 +49,23 @@ export const es: Dictionary = {
       source: null,
     },
   },
+  matchMethod: {
+    name_match: "Por nombre (Simbad)",
+    coordinate_match: "Por coordenadas (NED + Simbad)",
+  },
+  detail: {
+    ra: "Ascensión recta (RA)",
+    dec: "Declinación (Dec)",
+    distance: "Distancia",
+    outerRadius: "Radio externo modelado",
+    vobsOuter: "Vobs (radio externo)",
+    vbarOuter: "Vbar (radio externo)",
+    clipped: "(recortado)",
+    qualityFlag: "Indicador de calidad (SPARC)",
+    noData: "sin dato",
+    lickResolutionNote: "resolución Lick",
+    closeAriaLabel: "Cerrar panel de detalle",
+    hiiRegionsSuffix: (n) => `(${n} regiones HII)`,
+    pxSuffix: (n) => `(${n} px)`,
+  },
 };
