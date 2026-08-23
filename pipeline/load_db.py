@@ -28,6 +28,7 @@ from pipeline.external.identity import resolve_all
 from pipeline.external.metallicity_age import lookup_all
 from pipeline.external.moustakas import compute_moustakas_metallicity
 from pipeline.external.pilyugin import compute_pilyugin_metallicity
+from pipeline.external.sdss_indices import compute_sdss_spectral_ages
 from pipeline.fetch.sparc_fetch import fetch_all
 from pipeline.parsers.sparc import read_mass_models, read_sparc_main
 
@@ -121,6 +122,8 @@ def write_coverage_report(
         ).sum()
     )
     n_age_proxy_ssfr = int(metallicity_age["age_proxy_ssfr"].notna().sum())
+    n_age_proxy_dn4000 = int(metallicity_age["age_proxy_dn4000"].notna().sum())
+    n_age_proxy_hdelta_a = int(metallicity_age["age_proxy_hdelta_a"].notna().sum())
 
     report = {
         "n_total_sparc_galaxies": n_total,
@@ -136,6 +139,8 @@ def write_coverage_report(
         "n_with_any_external_metallicity_source": n_any_metallicity_source,
         "n_with_moustakas_and_pilyugin_both": n_moustakas_and_pilyugin_both,
         "n_with_age_proxy_ssfr_z0mgs": n_age_proxy_ssfr,
+        "n_with_age_proxy_dn4000": n_age_proxy_dn4000,
+        "n_with_age_proxy_hdelta_a": n_age_proxy_hdelta_a,
         "upsilon_disk": UPSILON_DISK,
         "upsilon_bulge": UPSILON_BULGE,
     }
@@ -155,6 +160,7 @@ def run_pipeline(
     force_refresh_fetch: bool = False,
     force_refresh_identity: bool = False,
     force_refresh_metallicity: bool = False,
+    force_refresh_sdss_indices: bool = False,
 ) -> dict:
     logger.info("fetching SPARC tables")
     paths = fetch_all(force_refresh=force_refresh_fetch)
@@ -189,10 +195,21 @@ def run_pipeline(
     )
     ssfr_df = compute_ssfr(resolved_pgc_id_set, force_refresh_fetch=force_refresh_fetch)
 
+    logger.info("measuring Dn4000/HdeltaA directly from SDSS spectra for %d resolved galaxies", len(resolved_pgc_ids))
+    resolved_positions = identity.loc[
+        identity["match_method"] != "unresolved", ["pgc_id", "ra", "dec"]
+    ].astype({"pgc_id": int})
+    sdss_indices_df = compute_sdss_spectral_ages(
+        resolved_positions,
+        force_refresh_match=force_refresh_sdss_indices,
+        force_refresh_spectra=force_refresh_sdss_indices,
+    )
+
     metallicity_age = (
         metallicity_age.merge(moustakas_df, on="pgc_id", how="left")
         .merge(pilyugin_df, on="pgc_id", how="left")
         .merge(ssfr_df, on="pgc_id", how="left")
+        .merge(sdss_indices_df, on="pgc_id", how="left")
     )
 
     logger.info("writing SQLite database at %s", db_path)
@@ -210,6 +227,7 @@ def main() -> None:
     parser.add_argument("--force-refresh-fetch", action="store_true")
     parser.add_argument("--force-refresh-identity", action="store_true")
     parser.add_argument("--force-refresh-metallicity", action="store_true")
+    parser.add_argument("--force-refresh-sdss-indices", action="store_true")
     parser.add_argument("-v", "--verbose", action="store_true")
     args = parser.parse_args()
 
@@ -224,6 +242,7 @@ def main() -> None:
         force_refresh_fetch=args.force_refresh_fetch,
         force_refresh_identity=args.force_refresh_identity,
         force_refresh_metallicity=args.force_refresh_metallicity,
+        force_refresh_sdss_indices=args.force_refresh_sdss_indices,
     )
 
 
