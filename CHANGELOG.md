@@ -5,7 +5,62 @@ general (para eso está el historial de git) — es específicamente el lugar do
 cualquier cambio que pueda afectar la interpretación de un hallazgo ya documentado en
 `docs/findings/`.
 
-## 2026-08-23 — Edad estelar real vía Dn4000/Hδ_A medidos directamente de espectros SDSS
+## 2026-08-23 — Refactor de comunicación (corrección): hero a título+línea, mapa de confiabilidad en el sitio
+
+**Refactor de comunicación: sin cambios en pipeline, cálculos, ni hallazgos existentes.**
+
+Corrige un problema de usabilidad introducido por la entrada anterior de este mismo día: agregar
+la oración de lenguaje llano al hero sin sacar nada más lo hizo más largo, no más claro.
+
+- El hero visible por default ahora es solo título + la oración de lenguaje llano + un badge
+  compacto con el disclaimer (antes un párrafo aparte en itálica). Los dos párrafos técnicos
+  (qué cruza con qué, por qué controlar por masa) se movieron **tal cual, sin reescribir**, a un
+  `<details>` colapsado por default ("¿Cómo funciona esto?").
+- El "mapa de confiabilidad" de la entrada anterior solo existía en `README.md` — nunca se había
+  agregado al sitio en vivo. Se construyó como sección propia del frontend (en los tres idiomas),
+  siempre visible, entre el hero y la sección de gráficos — nunca dentro del `<details>`
+  colapsable, porque es la pieza que más rápido comunica cuánto confiar en cada número.
+- Se eliminó el checkbox "Control correlation for mass" del gráfico "f_DM by Hubble type": desde
+  la entrada anterior ya no afectaba nada visible (el gráfico siempre muestra el Spearman crudo y
+  el controlado por masa juntos). Un control que no hace nada al interactuar es peor que no tener
+  control. Se sacó también el estado `controlForMassHubble` que ya no cumplía función (código
+  muerto); `controlForMassScatter` (el toggle que sí sigue afectando el scatter genérico) no se
+  tocó.
+
+## 2026-08-23 — Refactor de comunicación: README, hero, visualización y default de un toggle
+
+**Refactor de comunicación: sin cambios en pipeline, cálculos, ni hallazgos existentes. Objetivo:
+que el proyecto se entienda sin contexto previo.**
+
+Esta entrada es continuación de la misma convención de versionado ya usada en `docs/findings/` —
+acá se aplica a la documentación de cara al usuario, no a un hallazgo científico. Ningún archivo
+en `docs/findings/`, ningún cálculo del pipeline ni ningún número reportado cambió. Se reorganizó
+cómo se comunica lo que ya existía, para que alguien sin contexto previo (ej. un estudiante de
+primer año de universidad) entienda de qué trata el proyecto, qué tan confiable es cada parte, y
+no se pierda en detalles de infraestructura que no hacen a la pregunta científica.
+
+**Qué cambió:**
+- `README.md` se separó en dos documentos: un `README.md` corto (~3 min de lectura) con qué es el
+  proyecto, la pregunta que investiga, un "mapa de confiabilidad" por variable y links al resto;
+  y [`docs/TECHNICAL.md`](docs/TECHNICAL.md) (nuevo) con todo el contenido de implementación que
+  antes vivía en el README (stack, esquema de base de datos, cómo correr el pipeline, Docker,
+  despliegue en Render, CI, tests, fuentes y crédito) — movido tal cual, sin reescribir el
+  contenido técnico. De paso se corrigió un error de documentación preexistente no relacionado:
+  la sección de esquema de base de datos describía la tabla `metallicity_age` con las 7 columnas
+  originales de HyperLeda, sin las columnas de Moustakas/Pilyugin/z0MGS/SDSS agregadas en PRs
+  posteriores (el `schema.sql` real ya las tenía; solo la prosa del README había quedado vieja).
+- El hero del sitio ahora tiene una oración inicial en lenguaje llano antes de los párrafos
+  técnicos existentes, en los tres idiomas soportados.
+- Los scatter plots del frontend ahora atenúan visualmente (línea y banda gris punteada en vez
+  de color de acento) y anteceden el texto de Spearman con "Sin correlación significativa" cuando
+  p > 0.05, para cualquier combinación de ejes — evita que una línea de regresión prominente
+  sugiera una tendencia que el propio test estadístico no sostiene.
+- El gráfico "f_DM por tipo de Hubble" (el hallazgo más sólido del proyecto) ahora muestra el
+  Spearman crudo y el controlado por masa simultáneamente en el mismo texto, y el toggle de ese
+  gráfico específico arranca activado — el punto central del hallazgo (que controlar por masa
+  invierte la conclusión) ya no depende de que el usuario sepa que existe un toggle para verlo.
+
+
 
 **Qué se investigó primero (no integrado):** Gallazzi et al. 2005 (MNRAS, 362, 41), el catálogo
 de edades estelares vía síntesis de poblaciones más establecido para SDSS. No está en VizieR;

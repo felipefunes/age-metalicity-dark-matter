@@ -101,11 +101,14 @@ export const en: Dictionary = {
     scatterHint: "Hover a point for details, click it to open the galaxy's full record. Drag to zoom.",
     scatterLogSuffix: " (log scale)",
     hoverCrossLabel: "cross-match:",
+    notSignificantPrefix: "No significant correlation",
     hubbleTitle: "f_DM by Hubble type (morphological age proxy)",
     hubbleEmptyState: "No galaxies have both T and f_DM available under the current filters.",
     hubbleHint:
       "Each box summarizes the dark matter fraction of galaxies of that morphological type; the points are individual, clickable galaxies.",
     hubbleSourceSuffix: "— T is discrete/ordinal, grouped by type",
+    hubbleRawStatLabel: "Raw Spearman",
+    hubbleMassStatLabel: "Controlling for mass",
   },
   nav: {
     brand: "Dark Matter",
@@ -114,6 +117,9 @@ export const en: Dictionary = {
     languageLabel: "Language",
   },
   hero: {
+    leadQuestion:
+      "Do older or more evolved galaxies have more dark matter than younger ones? This project sets out to answer that question with real public data — and shows both what we found and the limits of what this data can actually tell us.",
+    howItWorksSummary: "How does this work?",
     intro1Before: "This tool cross-matches public galaxy kinematics data (",
     intro1After:
       ") with metallicity and stellar age from external catalogs (HyperLeda, NED), resolved to a canonical PGC identifier per galaxy.",
@@ -123,6 +129,41 @@ export const en: Dictionary = {
     intro2After:
       " — because a raw correlation between metallicity and dark matter can be spurious if both depend on the galaxy's mass.",
     disclaimer: "This is an exploratory tool, not a source of peer-reviewed, validated conclusions.",
+  },
+  reliability: {
+    heading: "Reliability map",
+    columnVariable: "Variable",
+    columnMeasures: "What it measures",
+    columnCoverage: "Coverage",
+    columnConfidence: "How reliable",
+    rows: [
+      {
+        variable: "Hubble type (morphology)",
+        measures: 'rough proxy for "evolutionary stage"',
+        coverage: "163/163 galaxies",
+        confidence: "High — full sample",
+      },
+      {
+        variable: "sSFR (z0MGS)",
+        measures: "proxy for recent star formation",
+        coverage: "126/163",
+        confidence: "High coverage, result: no correlation detected",
+      },
+      {
+        variable: "Dn4000 / Hδ_A",
+        measures: "stellar age measured directly from the spectrum",
+        coverage: "41/163",
+        confidence: "Medium — small sample, validated against official catalogs",
+      },
+      {
+        variable: "Metallicity (Moustakas/Pilyugin)",
+        measures: "measured chemical composition",
+        coverage: "22/163",
+        confidence: "Low — small sample, preliminary results",
+      },
+    ],
+    fourVariablesNote:
+      "Why four different age/composition variables instead of one? Each comes from a different source and method, with its own coverage — none covers the full sample. All are documented for transparency, not to cause confusion.",
   },
   section: {
     fuentesTitle: "Data sources",

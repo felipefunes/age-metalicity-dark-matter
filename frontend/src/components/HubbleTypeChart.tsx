@@ -4,14 +4,12 @@ import type { Layout, PlotData } from "plotly.js-dist-min";
 import type { GalaxyFilters } from "../api";
 import { useLocale } from "../i18n/LocaleContext";
 import { useCorrelation } from "../hooks/useCorrelation";
-import type { GalaxySummary } from "../types";
+import type { CorrelationResponse, GalaxySummary } from "../types";
 import { HUBBLE_TYPE_LABELS, formatPValue, hubbleTypeLabel } from "../utils/format";
 
 interface HubbleTypeChartProps {
   galaxies: GalaxySummary[];
   filters: GalaxyFilters;
-  controlForMass: boolean;
-  onControlForMassChange: (value: boolean) => void;
   onPointClick: (pgcId: number) => void;
   loading: boolean;
 }
@@ -21,22 +19,11 @@ const TYPE_ORDER = Object.keys(HUBBLE_TYPE_LABELS)
   .sort((a, b) => a - b)
   .map((t) => HUBBLE_TYPE_LABELS[t]);
 
-export function HubbleTypeChart({
-  galaxies,
-  filters,
-  controlForMass,
-  onControlForMassChange,
-  onPointClick,
-  loading,
-}: HubbleTypeChartProps) {
+export function HubbleTypeChart({ galaxies, filters, onPointClick, loading }: HubbleTypeChartProps) {
   const { t } = useLocale();
   const d = t((dict) => dict);
-  const correlation = useCorrelation(
-    "hubble_type",
-    "dm_fraction",
-    filters,
-    controlForMass ? "mass" : null,
-  );
+  const rawCorrelation = useCorrelation("hubble_type", "dm_fraction", filters, null);
+  const massCorrelation = useCorrelation("hubble_type", "dm_fraction", filters, "mass");
 
   const points = useMemo(
     () => galaxies.filter((g) => g.T !== null && g.f_dm !== null),
@@ -57,11 +44,17 @@ export function HubbleTypeChart({
     hovertemplate: "<b>%{customdata[0]}</b> (PGC %{customdata[1]})<br>f_DM: %{y}<extra></extra>",
   };
 
-  const annotationText = correlation.result
-    ? `${controlForMass ? d.chart.spearmanPartialMass : d.chart.spearman}: ` +
-      `ρ = ${correlation.result.coefficient !== null ? correlation.result.coefficient.toFixed(3) : "—"}, ` +
-      `${formatPValue(correlation.result.p_value)}, n = ${correlation.result.n}`
-    : "";
+  function formatStat(result: CorrelationResponse | null): string {
+    if (!result || result.coefficient === null) return "—";
+    const suffix = result.p_value !== null && result.p_value > 0.05 ? " (n.s.)" : "";
+    return `ρ = ${result.coefficient.toFixed(3)}, ${formatPValue(result.p_value)}${suffix}`;
+  }
+
+  const annotationText =
+    rawCorrelation.result && massCorrelation.result
+      ? `${d.chart.hubbleRawStatLabel}: ${formatStat(rawCorrelation.result)} · ` +
+        `${d.chart.hubbleMassStatLabel}: ${formatStat(massCorrelation.result)}`
+      : "";
 
   const layout: Partial<Layout> = {
     autosize: true,
@@ -106,14 +99,6 @@ export function HubbleTypeChart({
     <div className="panel">
       <div className="panel-title-row">
         <h2>{d.chart.hubbleTitle}</h2>
-        <label className="control-toggle">
-          <input
-            type="checkbox"
-            checked={controlForMass}
-            onChange={(e) => onControlForMassChange(e.target.checked)}
-          />
-          {d.chart.controlForMass}
-        </label>
       </div>
       <p className="panel-hint">{d.chart.hubbleHint}</p>
       {loading && <div className="status-text">{d.common.loading}</div>}

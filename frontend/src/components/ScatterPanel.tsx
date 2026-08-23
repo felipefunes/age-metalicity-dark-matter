@@ -125,6 +125,15 @@ export function ScatterPanel({
 
     const allTraces: Partial<PlotData>[] = [];
 
+    // A p > 0.05 (or unknown) Spearman result gets a muted, dashed line
+    // and band instead of the theme's accent color -- a visually
+    // prominent regression line next to a non-significant result reads as
+    // "there's a trend" even when the statistic says there isn't one.
+    const significant = correlation !== null && correlation.p_value !== null && correlation.p_value <= 0.05;
+    const regressionColor = significant ? "#22d3ee" : "#6c6c7d";
+    const bandFillColor = significant ? "rgba(34, 211, 238, 0.12)" : "rgba(108, 108, 125, 0.10)";
+    const regressionDash = significant ? "solid" : "dash";
+
     if (regression) {
       const xDataMin = Math.min(...points.map((p) => p.x));
       const xDataMax = Math.max(...points.map((p) => p.x));
@@ -155,7 +164,7 @@ export function ScatterPanel({
         x: fitXs,
         y: bandUpper,
         fill: "tonexty",
-        fillcolor: "rgba(34, 211, 238, 0.12)",
+        fillcolor: bandFillColor,
         line: { width: 0 },
         showlegend: false,
         hoverinfo: "skip",
@@ -166,7 +175,7 @@ export function ScatterPanel({
         mode: "lines",
         x: fitXs,
         y: fitYs,
-        line: { color: "#22d3ee", width: 1.5, dash: "solid" },
+        line: { color: regressionColor, width: 1.5, dash: regressionDash },
         name: "Regresión lineal",
         hoverinfo: "skip",
       });
@@ -175,7 +184,8 @@ export function ScatterPanel({
     allTraces.push(scatterTrace);
 
     const annotationText = correlation
-      ? `${controlForMass ? d.chart.spearmanPartialMass : d.chart.spearman}: ` +
+      ? `${significant ? "" : `${d.chart.notSignificantPrefix} — `}` +
+        `${controlForMass ? d.chart.spearmanPartialMass : d.chart.spearman}: ` +
         `ρ = ${correlation.coefficient !== null ? correlation.coefficient.toFixed(3) : "—"}, ` +
         `${formatPValue(correlation.p_value)}, n = ${correlation.n}`
       : "";

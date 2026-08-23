@@ -1,5 +1,12 @@
 import type { ScatterAxis } from "../types";
 
+interface ReliabilityRow {
+  variable: string;
+  measures: string;
+  coverage: string;
+  confidence: string;
+}
+
 interface AxisEntry {
   label: string;
   /** Which external source (beyond SPARC, always credited separately) this
@@ -97,10 +104,21 @@ export interface Dictionary {
     /** Label for the match-method word in the scatter's hover tooltip
      * (the value itself is looked up via dict.matchMethod). */
     hoverCrossLabel: string;
+    /** Prefixed to the Spearman annotation when p > 0.05, so a visually
+     * prominent regression line never implies a trend the statistic
+     * itself doesn't support. The line/band are also drawn muted+dashed
+     * in that case instead of in the theme's accent color. */
+    notSignificantPrefix: string;
     hubbleTitle: string;
     hubbleEmptyState: string;
     hubbleHint: string;
     hubbleSourceSuffix: string;
+    /** HubbleTypeChart always shows both the raw and mass-controlled
+     * Spearman results together -- there's no toggle for this chart
+     * anymore (removed: it stopped affecting anything visible once both
+     * were always shown, see CHANGELOG.md). */
+    hubbleRawStatLabel: string;
+    hubbleMassStatLabel: string;
   };
   nav: {
     /** Short 1-2 word wordmark next to the logo -- the full descriptive
@@ -116,12 +134,32 @@ export interface Dictionary {
    * dictionary values are plain strings, not JSX -- the wrapper elements
    * stay fixed in Hero.tsx, only the surrounding text is translated. */
   hero: {
+    /** Plain-language hook shown before the two technical intro paragraphs
+     * -- answers "what is this asking" before "how does it ask it". */
+    leadQuestion: string;
+    /** <summary> label for the collapsed-by-default "how does this work"
+     * <details>, which holds intro1/intro2 below -- the hero itself is
+     * just title + leadQuestion + the disclaimer badge now. */
+    howItWorksSummary: string;
     intro1Before: string;
     intro1After: string;
     intro2Before: string;
     intro2Bold: string;
     intro2After: string;
     disclaimer: string;
+  };
+  /** Always-visible reliability map, rendered as its own section between
+   * the Hero and #datos -- deliberately never inside the collapsible
+   * "how does this work" details, since it's the fastest way to communicate
+   * "how seriously to take each number" and shouldn't require a click. */
+  reliability: {
+    heading: string;
+    columnVariable: string;
+    columnMeasures: string;
+    columnCoverage: string;
+    columnConfidence: string;
+    rows: [ReliabilityRow, ReliabilityRow, ReliabilityRow, ReliabilityRow];
+    fourVariablesNote: string;
   };
   /** Section headings outside the hero (magazine-style but smaller). #datos
    * has no heading of its own -- a background-color band is enough to read

@@ -10,7 +10,12 @@ export interface AppState {
   requireAge: boolean;
   xAxis: ScatterAxis;
   yAxis: ScatterAxis;
-  controlForMass: boolean;
+  /** Only the scatter has a control-for-mass toggle now -- HubbleTypeChart
+   * used to have its own (controlForMassHubble), but once its annotation
+   * started always showing both raw and mass-controlled results, that
+   * toggle no longer affected anything visible and was removed entirely
+   * rather than left as a checkbox that does nothing. */
+  controlForMassScatter: boolean;
 }
 
 const DEFAULT_STATE: AppState = {
@@ -24,7 +29,7 @@ const DEFAULT_STATE: AppState = {
   // ScatterAxis for why "metallicity"/"age_gyr" aren't valid choices at all.
   xAxis: "age_proxy_ssfr",
   yAxis: "dm_fraction",
-  controlForMass: false,
+  controlForMassScatter: false,
 };
 
 function parseState(search: string): AppState {
@@ -47,7 +52,7 @@ function parseState(search: string): AppState {
     requireAge: params.get("require_age") === "true",
     xAxis: xAxis && SCATTER_AXIS_OPTIONS.includes(xAxis as ScatterAxis) ? (xAxis as ScatterAxis) : DEFAULT_STATE.xAxis,
     yAxis: yAxis && SCATTER_AXIS_OPTIONS.includes(yAxis as ScatterAxis) ? (yAxis as ScatterAxis) : DEFAULT_STATE.yAxis,
-    controlForMass: params.get("control_for_mass") === "true",
+    controlForMassScatter: params.get("control_for_mass_scatter") === "true",
   };
 }
 
@@ -62,7 +67,7 @@ function stateToSearch(state: AppState): string {
   if (state.requireAge) params.set("require_age", "true");
   if (state.xAxis !== DEFAULT_STATE.xAxis) params.set("x", state.xAxis);
   if (state.yAxis !== DEFAULT_STATE.yAxis) params.set("y", state.yAxis);
-  if (state.controlForMass) params.set("control_for_mass", "true");
+  if (state.controlForMassScatter) params.set("control_for_mass_scatter", "true");
   return params.toString();
 }
 
