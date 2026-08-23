@@ -14,6 +14,10 @@ export function axisValue(galaxy: GalaxySummary, axis: ScatterAxis): number | nu
       return galaxy.age_gyr;
     case "age_proxy_ssfr":
       return galaxy.age_proxy_ssfr;
+    case "age_proxy_dn4000":
+      return galaxy.age_proxy_dn4000;
+    case "age_proxy_hdelta_a":
+      return galaxy.age_proxy_hdelta_a;
     case "dm_fraction":
       return galaxy.f_dm;
     case "mass":

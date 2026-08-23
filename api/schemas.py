@@ -31,6 +31,12 @@ class GalaxySummary(BaseModel):
     # sSFR age PROXY (z0MGS) -- not a stellar-population-synthesis age,
     # never conflated with age_gyr.
     age_proxy_ssfr: float | None
+    # Measured directly from SDSS spectra (Balogh+1999 / Worthey & Ottaviani
+    # 1997) -- see docs/findings/2026-08-23_dn4000_hdelta_a.md for the
+    # mandatory age-metallicity degeneracy caveat before interpreting any
+    # correlation with metallicity.
+    age_proxy_dn4000: float | None
+    age_proxy_hdelta_a: float | None
 
 
 class GalaxyDetail(GalaxySummary):
@@ -50,6 +56,10 @@ class GalaxyDetail(GalaxySummary):
     e_age_proxy_ssfr: float | None
     age_proxy_source: str | None
     age_proxy_method: str | None
+    e_age_proxy_dn4000: float | None
+    n_pixels_dn4000: int | None
+    e_age_proxy_hdelta_a: float | None
+    n_pixels_hdelta_a: int | None
 
 
 class GalaxyListResponse(BaseModel):

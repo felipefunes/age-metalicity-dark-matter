@@ -66,6 +66,37 @@ CREATE TABLE sparc_kinematics (
 -- which already ships a PGC id per galaxy -- joined directly on pgc_id,
 -- not re-resolved through the Simbad/NED identity pipeline (see
 -- pipeline/external/README.md for why).
+--
+-- age_proxy_dn4000 / age_proxy_hdelta_a: measured DIRECTLY from SDSS
+-- spectra (pipeline/external/sdss_indices.py), not taken from a
+-- third-party catalog -- Gallazzi et al. 2005 (the obvious pre-computed
+-- source) was tried first and gave only n=13 (see
+-- docs/findings/2026-08-23_stellar_age_gallazzi_attempt.md), too old a
+-- SDSS data release to cover most of this project's post-2012 spectra.
+-- Source/method are constant per column, so documented here rather than
+-- as redundant per-row text columns (same convention as
+-- metallicity_kk04/pt05/pilyugin2014 above):
+--   - age_proxy_dn4000: Balogh et al. 1999 narrow 4000-Angstrom break,
+--     measured in Fnu (verified against the literature) from each
+--     galaxy's own SDSS spectrum (5 arcsec position match, reusing this
+--     project's existing ra/dec). n_pixels_dn4000 = the smaller of the
+--     two bands' usable-pixel counts, an audit trail. Validated against
+--     the official SDSS/MPA-JHU pipeline's own D4000_n for the same 32
+--     spectra: Spearman rho=0.997.
+--   - age_proxy_hdelta_a: Worthey & Ottaviani 1997 Lick HdeltaA index,
+--     measured after degrading each spectrum from its own native
+--     resolution (from its `wdisp` column) to the classical, wavelength-
+--     dependent Lick/IDS resolution (~10 Angstrom FWHM near this index,
+--     not the ~8-9 Angstrom that only applies near the Lick system's
+--     central wavelength ~5000 Angstrom) via a per-wavelength Gaussian
+--     kernel. Measured alongside Dn4000 (Kauffmann et al. 2003) to
+--     separate an old/quiescent population from one with a recent
+--     starburst superimposed -- NOT a resolution of the classical
+--     age-metallicity degeneracy (Worthey 1994); see the dedicated
+--     methodology-limitations section in
+--     docs/findings/2026-08-23_dn4000_hdelta_a.md before interpreting
+--     any correlation between either of these columns and metallicity.
+--     Validated against the same MPA-JHU reference: Spearman rho=0.993.
 CREATE TABLE metallicity_age (
     pgc_id                      INTEGER PRIMARY KEY REFERENCES galaxy_identity(pgc_id),
     metallicity                 REAL,
@@ -84,7 +115,13 @@ CREATE TABLE metallicity_age (
     age_proxy_ssfr              REAL,
     e_age_proxy_ssfr            REAL,
     age_proxy_source            TEXT,
-    age_proxy_method            TEXT
+    age_proxy_method            TEXT,
+    age_proxy_dn4000            REAL,
+    e_age_proxy_dn4000          REAL,
+    n_pixels_dn4000              INTEGER,
+    age_proxy_hdelta_a          REAL,
+    e_age_proxy_hdelta_a        REAL,
+    n_pixels_hdelta_a            INTEGER
 );
 
 CREATE INDEX idx_kinematics_T ON sparc_kinematics(T);

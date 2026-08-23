@@ -20,7 +20,9 @@ SELECT
     ma.metallicity_pt05, ma.e_metallicity_pt05,
     ma.n_hii_regions_moustakas,
     ma.metallicity_pilyugin2014, ma.e_metallicity_pilyugin2014,
-    ma.age_proxy_ssfr, ma.e_age_proxy_ssfr, ma.age_proxy_source, ma.age_proxy_method
+    ma.age_proxy_ssfr, ma.e_age_proxy_ssfr, ma.age_proxy_source, ma.age_proxy_method,
+    ma.age_proxy_dn4000, ma.e_age_proxy_dn4000, ma.n_pixels_dn4000,
+    ma.age_proxy_hdelta_a, ma.e_age_proxy_hdelta_a, ma.n_pixels_hdelta_a
 FROM galaxy_identity gi
 JOIN sparc_kinematics sk ON sk.pgc_id = gi.pgc_id
 LEFT JOIN metallicity_age ma ON ma.pgc_id = gi.pgc_id
