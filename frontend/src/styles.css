@@ -1,5 +1,6 @@
 :root {
   --bg: #0a0a0f;
+  --bg-section: #0e0e15;
   --bg-panel: #121218;
   --bg-panel-raised: #17171f;
   --border: #26262f;
@@ -70,6 +71,8 @@ a {
   flex-direction: column;
   flex: 1;
   min-height: 0;
+  background: var(--bg-section);
+  padding-top: 24px;
 }
 
 .section-title {
@@ -89,7 +92,12 @@ a {
 .main-content {
   flex: 1;
   min-width: 0;
-  padding: 20px;
+  /* Top padding is 3px, not 20px like the other sides: the first child is
+     always a .panel, which already has its own 1px border + 16px padding
+     before its heading -- 3 + 1 + 16 = 20px, so the panel's h2 lands at
+     the exact same Y as the sidebar's first heading (sidebar has no such
+     nested card, so its flat 20px padding reaches its heading directly). */
+  padding: 3px 20px 20px;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -263,13 +271,15 @@ a {
 /* ---------- Sources section + footer ---------- */
 
 .sources-section {
+  background: var(--bg);
   padding: 8px 24px 36px;
 }
 
 .sources-list {
   max-width: 860px;
   margin: 12px 0 0;
-  padding-left: 20px;
+  padding-left: 0;
+  list-style-position: inside;
   color: var(--text-secondary);
   font-size: 13px;
   line-height: 1.7;
@@ -297,7 +307,7 @@ a {
   flex-shrink: 0;
   border-right: 1px solid var(--border);
   background: var(--bg-panel);
-  padding: 18px;
+  padding: 20px;
   overflow-y: auto;
 }
 
