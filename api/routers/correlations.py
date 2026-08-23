@@ -11,10 +11,23 @@ from api.stats import partial_spearman, spearman
 router = APIRouter()
 
 # Public correlation-variable name -> column returned by the shared galaxy query.
+#
+# metallicity_kk04/metallicity_pt05/metallicity_pilyugin2014 are three
+# independent oxygen-abundance estimates (Moustakas et al. 2010's two
+# strong-line calibrations, and Pilyugin, Grebel & Kniazev 2014) --
+# deliberately exposed as separate variables rather than folded into the
+# single generic "metallicity" entry (which stays mapped to the original,
+# always-empty HyperLeda slot). Correlate against each separately; do not
+# average them (see docs/findings/ for a real cross-source consistency
+# check -- they agree well on relative ranking but not on absolute scale).
 VARIABLES = {
     "metallicity": "metallicity",
+    "metallicity_kk04": "metallicity_kk04",
+    "metallicity_pt05": "metallicity_pt05",
+    "metallicity_pilyugin2014": "metallicity_pilyugin2014",
     "hubble_type": "T",
     "age_gyr": "age_gyr",
+    "age_proxy_ssfr": "age_proxy_ssfr",
     "dm_fraction": "f_dm",
     "mass": "l36",
     "mhi": "mhi",

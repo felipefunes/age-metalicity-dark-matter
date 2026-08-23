@@ -15,7 +15,12 @@ SELECT
     sk.quality_flag, sk.distance_mpc, sk.vflat, sk.e_vflat, sk.r_outer_kpc,
     sk.vobs_outer, sk.e_vobs_outer, sk.vbar_outer,
     ma.metallicity, ma.metallicity_source, ma.metallicity_method,
-    ma.age_gyr, ma.age_source, ma.age_method
+    ma.age_gyr, ma.age_source, ma.age_method,
+    ma.metallicity_kk04, ma.e_metallicity_kk04,
+    ma.metallicity_pt05, ma.e_metallicity_pt05,
+    ma.n_hii_regions_moustakas,
+    ma.metallicity_pilyugin2014, ma.e_metallicity_pilyugin2014,
+    ma.age_proxy_ssfr, ma.e_age_proxy_ssfr, ma.age_proxy_source, ma.age_proxy_method
 FROM galaxy_identity gi
 JOIN sparc_kinematics sk ON sk.pgc_id = gi.pgc_id
 LEFT JOIN metallicity_age ma ON ma.pgc_id = gi.pgc_id

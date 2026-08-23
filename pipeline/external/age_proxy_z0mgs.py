@@ -1,7 +1,7 @@
-"""z0MGS (Leroy et al. 2019, "Z0MGS: A Comprehensive, Panchromatic Set of
-Physical Star Formation Rate and Stellar Mass Maps for Nearby Galaxies",
-ApJS, 244, 24). VizieR: J/ApJS/244/24, table4 ("SFR and M* estimates for
-local galaxies") -- the per-galaxy integrated values, not the pixel maps.
+"""Leroy, A. K., et al. 2019, "A z=0 Multiwavelength Galaxy Synthesis. I. A
+WISE and GALEX Atlas of Local Galaxies", ApJS, 244, 24 (the z0MGS project).
+VizieR: J/ApJS/244/24, table4 ("SFR and M* estimates for local galaxies")
+-- the per-galaxy integrated values, not the pixel maps.
 
 Produces a specific star formation rate (sSFR = SFR / M*) as a PROXY for
 stellar-population age -- low sSFR suggests an older, less actively

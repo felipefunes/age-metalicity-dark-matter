@@ -22,6 +22,15 @@ class GalaxySummary(BaseModel):
     metallicity_source: str | None
     age_gyr: float | None
     age_source: str | None
+    # Independent metallicity estimates, deliberately not merged into one
+    # "metallicity" value -- see docs/findings/ for why (different
+    # calibrations/catalogs, known systematic offsets between them).
+    metallicity_kk04: float | None
+    metallicity_pt05: float | None
+    metallicity_pilyugin2014: float | None
+    # sSFR age PROXY (z0MGS) -- not a stellar-population-synthesis age,
+    # never conflated with age_gyr.
+    age_proxy_ssfr: float | None
 
 
 class GalaxyDetail(GalaxySummary):
@@ -34,6 +43,13 @@ class GalaxyDetail(GalaxySummary):
     vbar_outer: float | None
     metallicity_method: str | None
     age_method: str | None
+    e_metallicity_kk04: float | None
+    e_metallicity_pt05: float | None
+    n_hii_regions_moustakas: int | None
+    e_metallicity_pilyugin2014: float | None
+    e_age_proxy_ssfr: float | None
+    age_proxy_source: str | None
+    age_proxy_method: str | None
 
 
 class GalaxyListResponse(BaseModel):

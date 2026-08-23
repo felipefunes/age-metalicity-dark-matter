@@ -1,5 +1,6 @@
-"""Pilyugin, Grebel & Kniazev 2014, "Abundances of Nearby Late-type Galaxies.
-I. Data", AJ, 147, 131. VizieR: J/AJ/147/131 (table "galaxies").
+"""Pilyugin, L. S., Grebel, E. K., & Kniazev, A. Y. 2014, "The Abundance
+Properties of Nearby Late-Type Galaxies. I. The Data", AJ, 147, 131.
+VizieR: J/AJ/147/131 (table "galaxies").
 
 Independent of Moustakas et al. 2010 (pipeline/external/moustakas.py) --
 different sample selection, different HII-region spectra, different
