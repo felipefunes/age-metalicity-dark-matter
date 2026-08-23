@@ -157,6 +157,41 @@ npm install
 npm run dev
 ```
 
+## CI
+
+`.github/workflows/ci.yml` corre en cada push a `main` y en cada PR: `pytest` (pipeline + API) y
+`tsc -b && npm run build` (frontend). La suite es deliberadamente libre de red (funciones puras +
+clientes falsos de Simbad/NED/SDSS + SQLite en memoria para los tests de la API), así que CI no
+depende de que los servicios externos estén arriba — eso lo cubre el pipeline real, no los tests.
+
+## Producción (Render, plan gratuito)
+
+`render.yaml` define dos servicios (deploy vía el dashboard de Render: **New → Blueprint**,
+apuntando a este repo en GitHub):
+
+- **API** (`age-metalicity-dark-matter-api`, Web Service, Docker) — usa
+  `api/Dockerfile.render`, que corre el pipeline completo **durante el build** (no en runtime) y
+  hornea `data/processed/galaxies.sqlite` directo en la imagen. El plan gratuito de Render no
+  incluye disco persistente, así que no hay otra forma de compartir el SQLite entre un job de
+  pipeline y el servicio de API como hace `docker-compose` localmente — cada redeploy vuelve a
+  correr el pipeline entero contra las fuentes reales, así que los datos quedan tan frescos como
+  el último deploy. El timeout de build de Render es de 120 min, de sobra para esto.
+- **Frontend** (`age-metalicity-dark-matter-frontend`, Static Site) — build estático
+  (`npm run build`), con una regla de rewrite `/api/*` hacia la URL pública del servicio de API
+  (mismo patrón que el proxy de nginx en `docker-compose`, evita CORS). Los Static Sites de
+  Render son gratis sin límite de "sleep" (no son cómputo).
+
+**Limitaciones reales del plan gratuito** (no son bugs, son el trade-off de "gratis"):
+- El servicio de API se duerme a los 15 min de inactividad — el primer request después de dormir
+  tarda ~1 min (cold start) en vez de responder al instante.
+- Sin refresco automático de datos: no hay cron gratis + disco persistente en Render, así que
+  "datos frescos" significa "hacé un redeploy manual" (o triggereado desde GitHub), no una
+  actualización periódica automática.
+- La regla de rewrite del frontend hacia la URL pública de la API no se pudo confirmar al 100%
+  contra la documentación pública de Render antes de escribirla — si `/api/*` no rutea bien
+  después del primer deploy, se ajusta desde el dashboard de Render (Static Site → Redirects/
+  Rewrites) sin necesidad de un redeploy.
+
 ## Tests
 
 ```bash

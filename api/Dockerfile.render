@@ -1,0 +1,30 @@
+# Production image for Render's free tier: a Web Service with no
+# persistent disk (that's a paid add-on on Render), so instead of the
+# docker-compose setup's separate pipeline+api containers sharing a
+# volume, the full pipeline runs as a BUILD step here and bakes
+# data/processed/galaxies.sqlite directly into this image. Every deploy
+# (manual or triggered) re-runs the pipeline against live sources, so the
+# served data is only as stale as the last deploy -- there is no
+# background refresh job (that would need a paid cron + persistent disk).
+#
+# Render's build step timeout is 120 minutes (documented), comfortably
+# above this pipeline's real run time even from a cold cache.
+FROM python:3.11-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY pipeline ./pipeline
+COPY api ./api
+
+# Bakes data/processed/galaxies.sqlite into the image. Uses the same
+# pipeline.config default paths the API also uses (both run from /app in
+# this image), so no API_DB_PATH override is needed.
+RUN python -m pipeline.load_db -v
+
+ENV PYTHONUNBUFFERED=1
+EXPOSE 8000
+
+CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000"]
