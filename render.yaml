@@ -30,3 +30,15 @@ services:
       - type: rewrite
         source: /api/*
         destination: https://age-metalicity-dark-matter-api.onrender.com/*
+      # SPA fallback: the frontend added client-side routing (/galaxies)
+      # with a hand-rolled router, not a full page per route. Render's
+      # static sites don't serve index.html for unknown paths by default
+      # (unlike the nginx config used for docker-compose, which already had
+      # `try_files $uri $uri/ /index.html`, and unlike Vite's dev/preview
+      # servers, which SPA-fallback out of the box) -- without this rule, a
+      # direct load or refresh of /galaxies in production 404s even though
+      # client-side navigation to it works fine. Must come after the more
+      # specific /api/* rule above so that one still matches first.
+      - type: rewrite
+        source: /*
+        destination: /index.html

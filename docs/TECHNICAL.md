@@ -184,9 +184,12 @@ apuntando a este repo en GitHub):
   correr el pipeline entero contra las fuentes reales, así que los datos quedan tan frescos como
   el último deploy. El timeout de build de Render es de 120 min, de sobra para esto.
 - **Frontend** (`age-metalicity-dark-matter-frontend`, Static Site) — build estático
-  (`npm run build`), con una regla de rewrite `/api/*` hacia la URL pública del servicio de API
-  (mismo patrón que el proxy de nginx en `docker-compose`, evita CORS). Los Static Sites de
-  Render son gratis sin límite de "sleep" (no son cómputo).
+  (`npm run build`), con dos reglas de rewrite: `/api/*` hacia la URL pública del servicio de API
+  (mismo patrón que el proxy de nginx en `docker-compose`, evita CORS), y `/*` → `/index.html`
+  como fallback de SPA — necesaria desde que el frontend tiene routing del lado del cliente
+  (`/galaxies`, ver `frontend/src/hooks/useRoute.ts`); sin esta regla, una carga directa o un
+  refresh de `/galaxies` en producción da 404 aunque la navegación interna funcione bien. Los
+  Static Sites de Render son gratis sin límite de "sleep" (no son cómputo).
 
 **Limitaciones reales del plan gratuito** (no son bugs, son el trade-off de "gratis"):
 - El servicio de API se duerme a los 15 min de inactividad — el primer request después de dormir
