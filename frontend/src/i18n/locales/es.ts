@@ -180,6 +180,11 @@ export const es: Dictionary = {
     dn4000Hdelta:
       "Dn4000 y Hδ_A medidos directamente sobre espectros de SDSS (no un catálogo pre-calculado), método de Kauffmann et al. (2003, MNRAS, 341, 33 y 54).",
     andConnector: "y",
+    sdssImaging: "imágenes ópticas para la galería de fotos (SDSS DR18 SkyServer).",
+    legacyImaging:
+      "imágenes ópticas de respaldo, mayor cobertura que SDSS (DESI Legacy Imaging Survey, capa DR10).",
+    wiseImaging:
+      "imágenes de infrarrojo medio (~3.4 μm) de todo el cielo, último respaldo cuando no hay cobertura óptica (WISE/unWISE, vía el visor de DESI Legacy Imaging).",
   },
   footer: {
     openSourceText: "Este es un proyecto de código abierto en",

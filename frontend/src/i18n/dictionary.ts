@@ -183,6 +183,11 @@ export interface Dictionary {
     /** Connector between the two citations in the Dn4000/Hδ_A entry
      * ("...54; {and} Worthey, G., ..."). */
     andConnector: string;
+    /** Illustrative-image sources for the /galaxies gallery -- service
+     * attributions like HyperLeda/NED/Simbad above, not paper citations. */
+    sdssImaging: string;
+    legacyImaging: string;
+    wiseImaging: string;
   };
   footer: {
     openSourceText: string;

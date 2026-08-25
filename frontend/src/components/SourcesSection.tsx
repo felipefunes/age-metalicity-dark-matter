@@ -48,6 +48,15 @@ export function SourcesSection() {
           <strong>Worthey, G., &amp; Ottaviani, D. L. 1997</strong>, <em>ApJS</em>, 111, 377 —{" "}
           {d.sources.dn4000Hdelta}
         </li>
+        <li>
+          <strong>SDSS SkyServer</strong> — {d.sources.sdssImaging}
+        </li>
+        <li>
+          <strong>DESI Legacy Imaging Survey</strong> — {d.sources.legacyImaging}
+        </li>
+        <li>
+          <strong>WISE / unWISE</strong> — {d.sources.wiseImaging}
+        </li>
       </ul>
     </section>
   );
