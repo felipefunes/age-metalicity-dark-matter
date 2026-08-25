@@ -1,3 +1,4 @@
+import type { MouseEvent } from "react";
 import { useLocale, type SupportedLocale } from "../i18n/LocaleContext";
 
 const LOCALE_OPTIONS: { value: SupportedLocale; label: string }[] = [
@@ -40,26 +41,36 @@ function LogoMark() {
   );
 }
 
-export function NavBar() {
+interface NavBarProps {
+  navigateTo: (href: string) => void;
+}
+
+export function NavBar({ navigateTo }: NavBarProps) {
   const { t, locale, setLocale } = useLocale();
   const d = t((dict) => dict);
 
+  function link(href: string) {
+    return (e: MouseEvent) => {
+      e.preventDefault();
+      navigateTo(href);
+    };
+  }
+
   return (
     <nav className="navbar">
-      <button
-        type="button"
-        className="navbar__brand"
-        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      >
+      <button type="button" className="navbar__brand" onClick={link("/")}>
         <LogoMark />
         <span>{d.nav.brand}</span>
       </button>
 
       <div className="navbar__right">
-        <a className="navbar__link" href="#datos">
+        <a className="navbar__link" href="/#datos" onClick={link("/#datos")}>
           {d.nav.dataLink}
         </a>
-        <a className="navbar__link" href="#fuentes">
+        <a className="navbar__link" href="/galaxies" onClick={link("/galaxies")}>
+          {d.nav.galaxiesLink}
+        </a>
+        <a className="navbar__link" href="/#fuentes" onClick={link("/#fuentes")}>
           {d.nav.sourcesLink}
         </a>
         <div className="navbar__locale" role="group" aria-label={d.nav.languageLabel}>

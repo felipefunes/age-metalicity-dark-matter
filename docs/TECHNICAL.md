@@ -184,9 +184,12 @@ apuntando a este repo en GitHub):
   correr el pipeline entero contra las fuentes reales, así que los datos quedan tan frescos como
   el último deploy. El timeout de build de Render es de 120 min, de sobra para esto.
 - **Frontend** (`age-metalicity-dark-matter-frontend`, Static Site) — build estático
-  (`npm run build`), con una regla de rewrite `/api/*` hacia la URL pública del servicio de API
-  (mismo patrón que el proxy de nginx en `docker-compose`, evita CORS). Los Static Sites de
-  Render son gratis sin límite de "sleep" (no son cómputo).
+  (`npm run build`), con dos reglas de rewrite: `/api/*` hacia la URL pública del servicio de API
+  (mismo patrón que el proxy de nginx en `docker-compose`, evita CORS), y `/*` → `/index.html`
+  como fallback de SPA — necesaria desde que el frontend tiene routing del lado del cliente
+  (`/galaxies`, ver `frontend/src/hooks/useRoute.ts`); sin esta regla, una carga directa o un
+  refresh de `/galaxies` en producción da 404 aunque la navegación interna funcione bien. Los
+  Static Sites de Render son gratis sin límite de "sleep" (no son cómputo).
 
 **Limitaciones reales del plan gratuito** (no son bugs, son el trade-off de "gratis"):
 - El servicio de API se duerme a los 15 min de inactividad — el primer request después de dormir
@@ -234,6 +237,36 @@ cd frontend && npx tsc -b && npm run build   # type-check + build de producción
   desactualizado respecto a la muestra) — ver `docs/findings/2026-08-23_stellar_age_gallazzi_attempt.md`.
 - **Worthey, G. 1994**, ApJS, 95, 107. Referencia de la degeneración clásica edad-metalicidad en
   índices de absorción — ver la sección dedicada en `docs/findings/2026-08-23_dn4000_hdelta_a.md`.
+- **SDSS SkyServer** — imágenes ópticas para la galería `/galaxies` del frontend (ver
+  "Módulo de galería de fotos" abajo). Servicio de imágenes, no una fuente de datos para ningún
+  cálculo del pipeline.
+- **DESI Legacy Imaging Survey** — imágenes ópticas de respaldo para la misma galería, mayor
+  cobertura que SDSS pero sin headers CORS y con un modo de fallo real documentado (ver abajo).
+- **WISE / unWISE** — imágenes de infrarrojo medio (~3.4 μm) de todo el cielo, último respaldo en
+  la misma galería cuando no hay cobertura óptica.
+
+## Módulo de galería de fotos (`/galaxies`)
+
+Página aparte (frontend puro, sin cambios de pipeline ni de API) que lista las 163 galaxias con
+una imagen real cuando algún relevamiento público tiene cobertura en esas coordenadas. Verificado
+contra endpoints reales antes de implementar (no asumido) — ver
+`frontend/src/utils/imageCutouts.ts` y `frontend/src/components/GalaxyImage.tsx` para el detalle
+completo, incluyendo dos limitaciones reales encontradas y documentadas en el código:
+
+- **SDSS devuelve HTTP 404 fuera de su cobertura, pero con un JPEG válido y decodificable** cuyos
+  píxeles dicen literalmente "outside the SDSS footprint" — un `<img onError>` nunca detecta esto
+  (el navegador no mira el status HTTP si el cuerpo decodifica como imagen real). Se resolvió
+  consultando SDSS con `fetch()` y revisando `response.ok` directamente (SDSS habilita CORS,
+  verificado), en vez de depender de `onError`.
+- **DESI Legacy Imaging no envía headers CORS** (verificado), así que el mismo chequeo por
+  `fetch()` no es viable ahí — fuera de su cobertura devuelve un JPEG en blanco/color sólido con
+  HTTP 200, que el `<img onError>` tampoco detecta. Limitación real, documentada, no resuelta:
+  algunas galaxias sin cobertura real en ningún relevamiento pueden mostrar ese tile en blanco de
+  DESI Legacy en vez de caer directamente al siguiente nivel (WISE) o al estado "sin imagen".
+
+El tamaño del recorte por galaxia se calcula desde `r_outer_kpc`/`distance_mpc` (ya en
+`GalaxyDetail`), validado empíricamente contra NGC2403 (grande, cercana) y CamB (enana compacta,
+resuelta por `coordinate_match`).
 
 ## Limitaciones conocidas
 

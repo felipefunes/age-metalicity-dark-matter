@@ -126,6 +126,7 @@ export interface Dictionary {
     brand: string;
     dataLink: string;
     sourcesLink: string;
+    galaxiesLink: string;
     languageLabel: string;
   };
   /** Hero masthead. The big title itself reuses common.siteTitle rather
@@ -182,9 +183,27 @@ export interface Dictionary {
     /** Connector between the two citations in the Dn4000/Hδ_A entry
      * ("...54; {and} Worthey, G., ..."). */
     andConnector: string;
+    /** Illustrative-image sources for the /galaxies gallery -- service
+     * attributions like HyperLeda/NED/Simbad above, not paper citations. */
+    sdssImaging: string;
+    legacyImaging: string;
+    wiseImaging: string;
   };
   footer: {
     openSourceText: string;
     licenseNote: string;
+  };
+  /** GalaxiesPage, GalaxyImage, GalaxyImageModal. */
+  galaxies: {
+    pageTitle: string;
+    pageHint: string;
+    /** Shown under a successfully-loaded image, naming whichever source in
+     * the fallback chain actually loaded (see imageCutouts.ts). */
+    sourceSdss: string;
+    sourceLegacyOptical: string;
+    sourceLegacyWise: string;
+    noImage: string;
+    viewFullRecord: string;
+    modalCloseAriaLabel: string;
   };
 }

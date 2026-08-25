@@ -115,6 +115,7 @@ export const es: Dictionary = {
     brand: "Materia Oscura",
     dataLink: "Datos",
     sourcesLink: "Fuentes",
+    galaxiesLink: "Galaxias",
     languageLabel: "Idioma",
   },
   hero: {
@@ -179,9 +180,25 @@ export const es: Dictionary = {
     dn4000Hdelta:
       "Dn4000 y Hδ_A medidos directamente sobre espectros de SDSS (no un catálogo pre-calculado), método de Kauffmann et al. (2003, MNRAS, 341, 33 y 54).",
     andConnector: "y",
+    sdssImaging: "imágenes ópticas para la galería de fotos (SDSS DR18 SkyServer).",
+    legacyImaging:
+      "imágenes ópticas de respaldo, mayor cobertura que SDSS (DESI Legacy Imaging Survey, capa DR10).",
+    wiseImaging:
+      "imágenes de infrarrojo medio (~3.4 μm) de todo el cielo, último respaldo cuando no hay cobertura óptica (WISE/unWISE, vía el visor de DESI Legacy Imaging).",
   },
   footer: {
     openSourceText: "Este es un proyecto de código abierto en",
     licenseNote: "Código bajo licencia MIT.",
+  },
+  galaxies: {
+    pageTitle: "Galaxias",
+    pageHint:
+      "Las 163 galaxias SPARC resueltas a PGC, con una imagen real cuando hay cobertura de algún relevamiento público. Hacé clic en una para verla más grande.",
+    sourceSdss: "Imagen: SDSS",
+    sourceLegacyOptical: "Imagen: DESI Legacy Imaging Survey (óptico)",
+    sourceLegacyWise: "Imagen: WISE (infrarrojo medio, ~3.4 μm)",
+    noImage: "Sin imagen disponible en los relevamientos consultados",
+    viewFullRecord: "Ver ficha completa",
+    modalCloseAriaLabel: "Cerrar imagen",
   },
 };

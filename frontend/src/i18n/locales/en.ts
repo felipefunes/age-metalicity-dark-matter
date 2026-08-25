@@ -114,6 +114,7 @@ export const en: Dictionary = {
     brand: "Dark Matter",
     dataLink: "Data",
     sourcesLink: "Sources",
+    galaxiesLink: "Galaxies",
     languageLabel: "Language",
   },
   hero: {
@@ -178,9 +179,24 @@ export const en: Dictionary = {
     dn4000Hdelta:
       "Dn4000 and Hδ_A measured directly from SDSS spectra (not a pre-computed catalog), following Kauffmann et al. (2003, MNRAS, 341, 33 and 54).",
     andConnector: "and",
+    sdssImaging: "optical images for the photo gallery (SDSS DR18 SkyServer).",
+    legacyImaging: "backup optical images, broader coverage than SDSS (DESI Legacy Imaging Survey, DR10 layer).",
+    wiseImaging:
+      "all-sky mid-infrared (~3.4 μm) images, last resort when there's no optical coverage (WISE/unWISE, via the DESI Legacy Imaging viewer).",
   },
   footer: {
     openSourceText: "This is an open-source project on",
     licenseNote: "Code licensed under MIT.",
+  },
+  galaxies: {
+    pageTitle: "Galaxies",
+    pageHint:
+      "The 163 SPARC galaxies resolved to PGC, with a real image where some public survey has coverage. Click one to see it larger.",
+    sourceSdss: "Image: SDSS",
+    sourceLegacyOptical: "Image: DESI Legacy Imaging Survey (optical)",
+    sourceLegacyWise: "Image: WISE (mid-infrared, ~3.4 μm)",
+    noImage: "No image available in the surveys checked",
+    viewFullRecord: "View full record",
+    modalCloseAriaLabel: "Close image",
   },
 };
