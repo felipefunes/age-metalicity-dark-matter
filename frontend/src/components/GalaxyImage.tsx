@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocale } from "../i18n/LocaleContext";
 import { legacySurveyCutoutUrl, sdssCutoutUrl } from "../utils/imageCutouts";
+import type { ImageTier } from "../utils/resolveImageTier";
 
 interface GalaxyImageProps {
   ra: number;
@@ -9,6 +10,20 @@ interface GalaxyImageProps {
   pixels: number;
   alt: string;
   className?: string;
+  /** Controlled mode: when the caller already knows which tier this
+   * galaxy resolves to (GalaxiesPage pre-resolves all 163 up front to sort
+   * the grid, see resolveImageTier.ts), pass it here to render that tier
+   * directly instead of re-running the async chain. Omit (or leave
+   * undefined) for uncontrolled mode -- GalaxyImageModal, a single galaxy
+   * at a time, resolves it lazily on mount itself. */
+  tier?: ImageTier;
+  /** Set to false to disable this component's own resolution entirely,
+   * even when `tier` is still undefined -- used by the grid while its
+   * batch pre-resolution is in flight, so 163 cards don't each start an
+   * independent, duplicate SDSS/Legacy/WISE check on top of the one
+   * GalaxiesPage is already running for sort order. Shows the loading
+   * placeholder until `tier` arrives instead. Defaults to true. */
+  selfResolve?: boolean;
 }
 
 /** SDSS -> DESI Legacy (optical) -> DESI Legacy (WISE mid-IR) -> "no image".
@@ -27,30 +42,42 @@ interface GalaxyImageProps {
  * response is a blank/solid-color 200 JPEG (documented in
  * imageCutouts.ts), which this component still cannot detect. Real,
  * accepted limitation for tiers 2/3 specifically, not for SDSS. */
-type Tier = "checking-sdss" | "sdss" | "legacy" | "wise" | "empty";
+type InternalTier = "checking-sdss" | ImageTier;
 
-export function GalaxyImage({ ra, dec, fovArcsec, pixels, alt, className }: GalaxyImageProps) {
+export function GalaxyImage({
+  ra,
+  dec,
+  fovArcsec,
+  pixels,
+  alt,
+  className,
+  tier: controlledTier,
+  selfResolve = true,
+}: GalaxyImageProps) {
   const { t } = useLocale();
   const d = t((dict) => dict);
-  const [tier, setTier] = useState<Tier>("checking-sdss");
+  const [resolvedTier, setResolvedTier] = useState<InternalTier>("checking-sdss");
 
   const sdssUrl = sdssCutoutUrl(ra, dec, fovArcsec, pixels);
 
   useEffect(() => {
+    if (controlledTier !== undefined || !selfResolve) return;
     const controller = new AbortController();
-    setTier("checking-sdss");
+    setResolvedTier("checking-sdss");
 
     fetch(sdssUrl, { signal: controller.signal })
-      .then((res) => setTier(res.ok ? "sdss" : "legacy"))
+      .then((res) => setResolvedTier(res.ok ? "sdss" : "legacy"))
       .catch((err: unknown) => {
         if (err instanceof DOMException && err.name === "AbortError") return;
-        setTier("legacy");
+        setResolvedTier("legacy");
       });
 
     return () => controller.abort();
     // sdssUrl is derived purely from ra/dec/fovArcsec/pixels, so listing
     // those four is equivalent to listing sdssUrl itself.
-  }, [ra, dec, fovArcsec, pixels]);
+  }, [ra, dec, fovArcsec, pixels, controlledTier, selfResolve]);
+
+  const tier = controlledTier ?? resolvedTier;
 
   if (tier === "checking-sdss") {
     return <div className={`galaxy-image galaxy-image--loading ${className ?? ""}`} />;
@@ -75,7 +102,11 @@ export function GalaxyImage({ ra, dec, fovArcsec, pixels, alt, className }: Gala
     tier === "sdss" ? d.galaxies.sourceSdss : tier === "legacy" ? d.galaxies.sourceLegacyOptical : d.galaxies.sourceLegacyWise;
 
   function advance() {
-    setTier((prev) => (prev === "sdss" ? "legacy" : prev === "legacy" ? "wise" : "empty"));
+    // Only the uncontrolled, self-resolving (modal) path can still advance
+    // on a real <img> load failure -- in controlled mode the tier was
+    // already fully resolved up front by resolveImageTier.ts.
+    if (controlledTier !== undefined || !selfResolve) return;
+    setResolvedTier((prev) => (prev === "sdss" ? "legacy" : prev === "legacy" ? "wise" : "empty"));
   }
 
   return (
