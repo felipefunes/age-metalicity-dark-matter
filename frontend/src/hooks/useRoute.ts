@@ -10,9 +10,10 @@ export interface RouteState {
   /** Navigates to an internal href ("/", "/galaxies", "/#datos", ...).
    * If the pathname differs from the current one, pushes history and
    * swaps the page, then scrolls to the hash (if any) once rendered. If
-   * the pathname is the same as the current one, this just sets
-   * location.hash -- native anchor-scroll behavor, unchanged from before
-   * this hook existed (e.g. clicking "Fuentes" while already on "/"). */
+   * the pathname is the same as the current one, this sets location.hash
+   * (native anchor-scroll, e.g. clicking "Fuentes" while already on "/"),
+   * or scrolls to top if there's no hash (e.g. clicking the brand while
+   * already on "/"). */
   navigateTo: (href: string) => void;
 }
 
@@ -50,6 +51,8 @@ export function useRoute(): RouteState {
       scrollToHashIfPresent(url.hash);
     } else if (url.hash) {
       window.location.hash = url.hash;
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, []);
 
