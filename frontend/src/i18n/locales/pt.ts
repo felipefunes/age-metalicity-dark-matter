@@ -115,6 +115,7 @@ export const pt: Dictionary = {
     brand: "Matéria Escura",
     dataLink: "Dados",
     sourcesLink: "Fontes",
+    galaxiesLink: "Galáxias",
     languageLabel: "Idioma",
   },
   hero: {
@@ -183,5 +184,16 @@ export const pt: Dictionary = {
   footer: {
     openSourceText: "Este é um projeto de código aberto no",
     licenseNote: "Código sob licença MIT.",
+  },
+  galaxies: {
+    pageTitle: "Galáxias",
+    pageHint:
+      "As 163 galáxias SPARC resolvidas para PGC, com uma imagem real quando há cobertura de algum levantamento público. Clique em uma para vê-la maior.",
+    sourceSdss: "Imagem: SDSS",
+    sourceLegacyOptical: "Imagem: DESI Legacy Imaging Survey (óptico)",
+    sourceLegacyWise: "Imagem: WISE (infravermelho médio, ~3.4 μm)",
+    noImage: "Sem imagem disponível nos levantamentos consultados",
+    viewFullRecord: "Ver ficha completa",
+    modalCloseAriaLabel: "Fechar imagem",
   },
 };

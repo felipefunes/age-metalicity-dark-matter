@@ -126,6 +126,7 @@ export interface Dictionary {
     brand: string;
     dataLink: string;
     sourcesLink: string;
+    galaxiesLink: string;
     languageLabel: string;
   };
   /** Hero masthead. The big title itself reuses common.siteTitle rather
@@ -186,5 +187,18 @@ export interface Dictionary {
   footer: {
     openSourceText: string;
     licenseNote: string;
+  };
+  /** GalaxiesPage, GalaxyImage, GalaxyImageModal. */
+  galaxies: {
+    pageTitle: string;
+    pageHint: string;
+    /** Shown under a successfully-loaded image, naming whichever source in
+     * the fallback chain actually loaded (see imageCutouts.ts). */
+    sourceSdss: string;
+    sourceLegacyOptical: string;
+    sourceLegacyWise: string;
+    noImage: string;
+    viewFullRecord: string;
+    modalCloseAriaLabel: string;
   };
 }

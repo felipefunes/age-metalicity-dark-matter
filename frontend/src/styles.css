@@ -757,3 +757,44 @@ select {
   border-color: var(--accent-violet);
   color: var(--accent-violet);
 }
+
+/* ---------- Galaxy image (GalaxyImage.tsx) ---------- */
+
+.galaxy-image {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: var(--bg-panel-raised);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.galaxy-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.galaxy-image__attribution {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 4px 8px;
+  font-size: 10px;
+  color: var(--text-secondary);
+  background: linear-gradient(0deg, rgba(10, 10, 15, 0.75), transparent);
+}
+
+.galaxy-image--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 11.5px;
+  border: 1px dashed var(--border);
+}
