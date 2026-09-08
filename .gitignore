@@ -34,3 +34,6 @@ frontend/*.tsbuildinfo
 
 # env
 .env
+
+# Claude Code private notes
+CLAUDE.local.md
