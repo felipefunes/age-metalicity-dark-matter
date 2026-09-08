@@ -32,8 +32,9 @@ frontend/*.tsbuildinfo
 .vscode/
 .idea/
 
-# env
-.env
+# env (all variants tracked-out except the committed example)
+.env*
+!.env.example
 
 # Claude Code private notes
 CLAUDE.local.md
